@@ -1,0 +1,765 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     27948,        755]
+NotebookOptionsPosition[     23816,        649]
+NotebookOutlinePosition[     24161,        664]
+CellTagsIndexPosition[     24118,        661]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"Cases", "[", 
+  RowBox[{
+   RowBox[{"List", "@", 
+    RowBox[{"<|", 
+     RowBox[{
+     "\"\<browser_download_url\>\"", "\[Rule]", "\"\<test.paclet\>\""}], 
+     "|>"}]}], ",", 
+   RowBox[{
+    RowBox[{"KeyValuePattern", "[", 
+     RowBox[{"\"\<browser_download_url\>\"", " ", "\[Rule]", " ", 
+      RowBox[{"url_String", " ", "/;", " ", 
+       RowBox[{"StringEndsQ", "[", 
+        RowBox[{"url", ",", "\"\<.paclet\>\""}], "]"}]}]}], "]"}], 
+    "\[RuleDelayed]", "url"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6991220664339123`*^9, 3.6991221099179125`*^9}, {
+  3.699122205340412*^9, 
+  3.6991222217334127`*^9}},ExpressionUUID->"3338ff22-0681-4a5e-af65-\
+18e6e8e937f7"],
+
+Cell[BoxData[
+ RowBox[{"{", "\<\"test.paclet\"\>", "}"}]], "Output",
+ CellChangeTimes->{{3.6991220933149123`*^9, 3.6991221109299126`*^9}, {
+  3.699122213074912*^9, 
+  3.6991222226214123`*^9}},ExpressionUUID->"dd0a32e2-0bc2-4597-a4bd-\
+578e5842b138"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"GitHubPacletInstall", "[", 
+  RowBox[{"\"\<kubapod\>\"", ",", "\"\<MoreStyles\>\""}], "]"}]], "Code",
+ CellChangeTimes->{{3.699123224503314*^9, 
+  3.699123256741314*^9}},ExpressionUUID->"7af2d880-f73c-4e7e-a3d7-\
+d409da3475e7"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "GitHubPacletInstall", 
+   "[", "\<\"https://github.com/kubaPod/MoreStyles/releases/download/v0.1.0/\
+MoreStyles-0.1.0.paclet\"\>", "]"}], "}"}]], "Output",
+ CellChangeTimes->{3.699123258865814*^9, 3.699123443729814*^9, 
+  3.6991234848788137`*^9, 
+  3.699123607982814*^9},ExpressionUUID->"85996ead-fefd-4cbf-ab79-\
+81b8e7308890"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{"<<", "GeneralUtilities`"}], "\n", 
+ RowBox[{"PrintDefinitions", "@", "PacletInstallQueued"}]}], "Code",Expression\
+UUID->"b1aef068-ec08-4952-94ab-cf9dfa8cf39e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"http", ":"}], "//", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"mathematica", ".", "stackexchange", ".", "com"}], "/", 
+      "questions"}], "/", "130534"}], "/", "persistent"}], "-", "storage", 
+   "-", "for", "-", 
+   RowBox[{
+    RowBox[{"packages", "/", "131158"}], "#131158"}]}]}]], "Code",ExpressionUU\
+ID->"b143ad53-b359-4127-92f0-1c93161e033a"],
+
+Cell[BoxData[
+ RowBox[{"json", "=", 
+  RowBox[{"Import", "[", "\n", "            ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "StringTemplate", "[", 
+      "\"\<https://api.github.com/repos/`1`/`2`/releases/latest\>\"", "]"}], 
+     "[", 
+     RowBox[{"\"\<kubapod\>\"", ",", " ", "\"\<MoreStyles\>\""}], "]"}], "\n",
+     "          ", ",", " ", "\"\<RawJSON\>\""}], "\n", "        ", 
+   "]"}]}]], "Code",
+ CellChangeTimes->{{3.6991145360935*^9, 
+  3.6991145364205*^9}},ExpressionUUID->"ecb5bc72-15d0-4dca-9190-edac52d11bc3"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Cases", "[", 
+  RowBox[{
+   RowBox[{"json", "[", "\"\<assets\>\"", "]"}], ",", " ", 
+   RowBox[{
+    RowBox[{"KeyValuePattern", "[", 
+     RowBox[{"\"\<browser_download_url\>\"", " ", "\[Rule]", " ", 
+      RowBox[{"url_String", " ", "/;", " ", 
+       RowBox[{"StringEndsQ", "[", 
+        RowBox[{"url", ",", " ", "\"\<.paclet\>\""}], "]"}]}]}], "]"}], 
+    "\[RuleDelayed]", "url"}]}], "]"}]], "Code",
+ CellChangeTimes->{{3.6991147106335*^9, 3.6991147142445*^9}, {
+   3.6991149781745*^9, 3.6991150722605*^9}, 3.699119820656405*^9, {
+   3.6991222572199125`*^9, 3.699122309861412*^9}, {3.6991228282053137`*^9, 
+   3.699122888628314*^9}},ExpressionUUID->"a2511b98-aaa5-4698-adc0-\
+d8f69c01f21e"],
+
+Cell[BoxData[
+ RowBox[{"{", \
+"\<\"https://github.com/kubaPod/MoreStyles/releases/download/v0.1.0/\
+MoreStyles-0.1.0.paclet\"\>", "}"}]], "Output",
+ CellChangeTimes->{
+  3.6991147148695*^9, {3.6991150302295*^9, 3.6991150632365*^9}, 
+   3.699119821030805*^9, {3.6991222808129125`*^9, 3.6991223106539125`*^9}, 
+   3.699122841953314*^9, 
+   3.6991228896643143`*^9},ExpressionUUID->"4f7a6dee-4ecc-458c-9689-\
+da55a8d2e339"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Lookup", "[", 
+  RowBox[{"json", ",", " ", "\"\<assets\>\""}], "]"}]], "Code",ExpressionUUID-\
+>"c39b5c31-e5d2-43c6-9684-bf68becfbb5c"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"\<\"label\"\>", "\[Rule]", "Null"}], ",", 
+    RowBox[{"\<\"url\"\>", 
+     "\[Rule]", \
+"\<\"https://api.github.com/repos/kubaPod/MoreStyles/releases/assets/3439419\"\
+\>"}], ",", 
+    RowBox[{"\<\"size\"\>", "\[Rule]", "4412"}], ",", 
+    RowBox[{"\<\"uploader\"\>", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\<\"login\"\>", "\[Rule]", "\<\"kubaPod\"\>"}], ",", 
+       RowBox[{"\<\"gravatar_id\"\>", "\[Rule]", "\<\"\"\>"}], ",", 
+       RowBox[{"\<\"url\"\>", 
+        "\[Rule]", "\<\"https://api.github.com/users/kubaPod\"\>"}], ",", 
+       RowBox[{"\<\"following_url\"\>", 
+        "\[Rule]", \
+"\<\"https://api.github.com/users/kubaPod/following{/other_user}\"\>"}], ",", 
+       RowBox[{"\<\"followers_url\"\>", 
+        "\[Rule]", "\<\"https://api.github.com/users/kubaPod/followers\"\>"}],
+        ",", 
+       RowBox[{"\<\"site_admin\"\>", "\[Rule]", "False"}], ",", 
+       RowBox[{"\<\"avatar_url\"\>", 
+        "\[Rule]", "\<\"https://avatars3.githubusercontent.com/u/15227576?v=3\
+\"\>"}], ",", 
+       RowBox[{"\<\"repos_url\"\>", 
+        "\[Rule]", "\<\"https://api.github.com/users/kubaPod/repos\"\>"}], 
+       ",", 
+       RowBox[{"\<\"subscriptions_url\"\>", 
+        "\[Rule]", \
+"\<\"https://api.github.com/users/kubaPod/subscriptions\"\>"}], ",", 
+       RowBox[{"\<\"id\"\>", "\[Rule]", "15227576"}], ",", 
+       RowBox[{"\<\"received_events_url\"\>", 
+        "\[Rule]", \
+"\<\"https://api.github.com/users/kubaPod/received_events\"\>"}], ",", 
+       RowBox[{"\<\"html_url\"\>", 
+        "\[Rule]", "\<\"https://github.com/kubaPod\"\>"}], ",", 
+       RowBox[{"\<\"gists_url\"\>", 
+        "\[Rule]", \
+"\<\"https://api.github.com/users/kubaPod/gists{/gist_id}\"\>"}], ",", 
+       RowBox[{"\<\"starred_url\"\>", 
+        "\[Rule]", \
+"\<\"https://api.github.com/users/kubaPod/starred{/owner}{/repo}\"\>"}], ",", 
+       RowBox[{"\<\"organizations_url\"\>", 
+        "\[Rule]", "\<\"https://api.github.com/users/kubaPod/orgs\"\>"}], ",", 
+       RowBox[{"\<\"events_url\"\>", 
+        "\[Rule]", "\<\"https://api.github.com/users/kubaPod/events{/privacy}\
+\"\>"}], ",", 
+       RowBox[{"\<\"type\"\>", "\[Rule]", "\<\"User\"\>"}]}], "}"}]}], ",", 
+    RowBox[{"\<\"download_count\"\>", "\[Rule]", "7"}], ",", 
+    RowBox[{"\<\"content_type\"\>", 
+     "\[Rule]", "\<\"application/octet-stream\"\>"}], ",", 
+    RowBox[{"\<\"id\"\>", "\[Rule]", "3439419"}], ",", 
+    RowBox[{"\<\"name\"\>", "\[Rule]", "\<\"MoreStyles-0.1.0.paclet\"\>"}], 
+    ",", 
+    RowBox[{"\<\"state\"\>", "\[Rule]", "\<\"uploaded\"\>"}], ",", 
+    RowBox[{"\<\"created_at\"\>", "\[Rule]", "\<\"2017-03-19T20:14:35Z\"\>"}],
+     ",", 
+    RowBox[{"\<\"updated_at\"\>", "\[Rule]", "\<\"2017-03-19T20:14:36Z\"\>"}],
+     ",", 
+    RowBox[{"\<\"browser_download_url\"\>", 
+     "\[Rule]", \
+"\<\"https://github.com/kubaPod/MoreStyles/releases/download/v0.1.0/\
+MoreStyles-0.1.0.paclet\"\>"}]}], "}"}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.6991145142915*^9},ExpressionUUID->"178e1e9b-5728-4c0d-9bac-67b3e9c6e0d9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Lookup", "[", 
+  RowBox[{
+   RowBox[{"First", " ", "@", " ", 
+    RowBox[{"Lookup", "[", 
+     RowBox[{"json", ",", " ", "\"\<assets\>\""}], "]"}]}], ",", " ", 
+   "\"\<browser_download_url\>\""}], "]"}]], "Code",ExpressionUUID->"2aa8baeb-\
+137d-47a4-8702-4ed40f640ba8"],
+
+Cell[BoxData["\<\"https://github.com/kubaPod/MoreStyles/releases/download/v0.\
+1.0/MoreStyles-0.1.0.paclet\"\>"], "Output",
+ CellChangeTimes->{{3.6991144813525*^9, 
+  3.6991145079185*^9}},ExpressionUUID->"ff58d867-56ce-459e-b6f8-afafd54a3f15"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Association", "@", "json"}], "//", "Dataset"}]], "Code",ExpressionU\
+UID->"10ed55a9-76fd-4fda-bb12-f16142bcbbe2"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Options", "@", "PacletInstall"}]], "Code",
+ CellChangeTimes->{{3.6991140601955*^9, 
+  3.6991140785004997`*^9}},ExpressionUUID->"7e882c0b-cd60-48ad-84f0-\
+cd8a500e4d2c"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"\<\"IgnoreVersion\"\>", "\[Rule]", "False"}], ",", 
+   RowBox[{"\<\"DeletePacletFile\"\>", "\[Rule]", "False"}], ",", 
+   RowBox[{"\<\"Site\"\>", "\[Rule]", "Automatic"}], ",", 
+   RowBox[{"\<\"UpdateSites\"\>", "\[Rule]", "Automatic"}], ",", 
+   RowBox[{"\<\"Asynchronous\"\>", "\[Rule]", "False"}], ",", 
+   RowBox[{"\<\"CompletionFunction\"\>", "\[Rule]", "None"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.6991140683765*^9, 
+  3.6991140791705*^9}},ExpressionUUID->"03f95580-3cb7-4c66-870e-428faaccdc47"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DownValues", "[", "PacletInstall", "]"}], "[", 
+   RowBox[{"[", 
+    RowBox[{";;", ",", "1"}], "]"}], "]"}], "//", "Column"}]], "Code",
+ CellChangeTimes->{{3.6991140981335*^9, 
+  3.6991141194845*^9}},ExpressionUUID->"0029bbdf-6351-4f76-b5bc-5b7759f1edc0"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     RowBox[{"HoldPattern", "[", 
+      RowBox[{"PacletInstall", "[", 
+       RowBox[{"PacletManager`Manager`Private`str_String", ",", 
+        RowBox[{"PacletManager`Manager`Private`opts", ":", 
+         RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], "]"}]},
+    {
+     RowBox[{"HoldPattern", "[", 
+      RowBox[{"PacletInstall", "[", 
+       RowBox[{"PacletManager`Manager`Private`p_Paclet", ",", 
+        RowBox[{"PacletManager`Manager`Private`opts", ":", 
+         RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], "]"}]},
+    {
+     RowBox[{"HoldPattern", "[", 
+      RowBox[{"PacletInstall", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "PacletManager`Manager`Private`pacletName_String", ",", 
+          "PacletManager`Manager`Private`pacletVersion_String"}], "}"}], ",", 
+        RowBox[{"PacletManager`Manager`Private`opts", ":", 
+         RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], "]"}]},
+    {
+     RowBox[{"HoldPattern", "[", 
+      RowBox[{"PacletInstall", "[", 
+       RowBox[{
+       "PacletManager`Manager`Private`downloadTask_AsynchronousTaskObject", 
+        ",", 
+        RowBox[{"PacletManager`Manager`Private`opts", ":", 
+         RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], "]"}]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Output",
+ CellChangeTimes->{{3.6991141035074997`*^9, 
+  3.6991141201775*^9}},ExpressionUUID->"4853e66a-ae0d-475e-9bca-3f390569ace6"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<PacletManager`\>\"", "]"}]], "Code",
+ CellChangeTimes->{{3.6991142907115*^9, 
+  3.6991142997244997`*^9}},ExpressionUUID->"b515245c-5e40-44d0-8b01-\
+3e9ae4f633e1"],
+
+Cell[BoxData[
+ RowBox[{"PacletInstall", "[", "]"}]], "Code",
+ CellChangeTimes->{{3.6991143045325003`*^9, 
+  3.6991143118925*^9}},ExpressionUUID->"ab425dcc-3a60-4498-bf89-df755919af38"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"json", "=", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{
+     "\"\<url\>\"", "\[Rule]", 
+      "\"\<https://api.github.com/repos/kubaPod/MoreStyles/releases/5795581\>\
+\""}], ",", 
+     RowBox[{
+     "\"\<assets_url\>\"", "\[Rule]", 
+      "\"\<https://api.github.com/repos/kubaPod/MoreStyles/releases/5795581/\
+assets\>\""}], ",", 
+     RowBox[{
+     "\"\<upload_url\>\"", "\[Rule]", 
+      "\"\<https://uploads.github.com/repos/kubaPod/MoreStyles/releases/\
+5795581/assets{?name,label}\>\""}], ",", 
+     RowBox[{
+     "\"\<html_url\>\"", "\[Rule]", 
+      "\"\<https://github.com/kubaPod/MoreStyles/releases/tag/v0.1.0\>\""}], 
+     ",", 
+     RowBox[{"\"\<id\>\"", "\[Rule]", "5795581"}], ",", 
+     RowBox[{"\"\<tag_name\>\"", "\[Rule]", "\"\<v0.1.0\>\""}], ",", 
+     RowBox[{"\"\<target_commitish\>\"", "\[Rule]", "\"\<master\>\""}], ",", 
+     RowBox[{"\"\<name\>\"", "\[Rule]", "\"\<init release\>\""}], ",", 
+     RowBox[{"\"\<draft\>\"", "\[Rule]", "False"}], ",", 
+     RowBox[{"\"\<author\>\"", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\"\<login\>\"", "\[Rule]", "\"\<kubaPod\>\""}], ",", 
+        RowBox[{"\"\<id\>\"", "\[Rule]", "15227576"}], ",", 
+        RowBox[{
+        "\"\<avatar_url\>\"", "\[Rule]", 
+         "\"\<https://avatars3.githubusercontent.com/u/15227576?v=3\>\""}], 
+        ",", 
+        RowBox[{"\"\<gravatar_id\>\"", "\[Rule]", "\"\<\>\""}], ",", 
+        RowBox[{
+        "\"\<url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod\>\""}], ",", 
+        RowBox[{
+        "\"\<html_url\>\"", "\[Rule]", "\"\<https://github.com/kubaPod\>\""}],
+         ",", 
+        RowBox[{
+        "\"\<followers_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/followers\>\""}], ",", 
+        RowBox[{
+        "\"\<following_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/following{/other_user}\>\"\
+"}], ",", 
+        RowBox[{
+        "\"\<gists_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/gists{/gist_id}\>\""}], 
+        ",", 
+        RowBox[{
+        "\"\<starred_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/starred{/owner}{/repo}\>\"\
+"}], ",", 
+        RowBox[{
+        "\"\<subscriptions_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/subscriptions\>\""}], ",", 
+        RowBox[{
+        "\"\<organizations_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/orgs\>\""}], ",", 
+        RowBox[{
+        "\"\<repos_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/repos\>\""}], ",", 
+        RowBox[{
+        "\"\<events_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/events{/privacy}\>\""}], 
+        ",", 
+        RowBox[{
+        "\"\<received_events_url\>\"", "\[Rule]", 
+         "\"\<https://api.github.com/users/kubaPod/received_events\>\""}], 
+        ",", 
+        RowBox[{"\"\<type\>\"", "\[Rule]", "\"\<User\>\""}], ",", 
+        RowBox[{"\"\<site_admin\>\"", "\[Rule]", "False"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\"\<prerelease\>\"", "\[Rule]", "False"}], ",", 
+     RowBox[{
+     "\"\<created_at\>\"", "\[Rule]", "\"\<2017-03-19T20:11:16Z\>\""}], ",", 
+     RowBox[{
+     "\"\<published_at\>\"", "\[Rule]", "\"\<2017-03-19T20:14:47Z\>\""}], ",", 
+     RowBox[{"\"\<assets\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\[LeftAssociation]", 
+        RowBox[{
+         RowBox[{
+         "\"\<url\>\"", "\[Rule]", 
+          "\"\<https://api.github.com/repos/kubaPod/MoreStyles/releases/\
+assets/3439419\>\""}], ",", 
+         RowBox[{"\"\<id\>\"", "\[Rule]", "3439419"}], ",", 
+         RowBox[{
+         "\"\<name\>\"", "\[Rule]", "\"\<MoreStyles-0.1.0.paclet\>\""}], ",", 
+         RowBox[{"\"\<label\>\"", "\[Rule]", "Null"}], ",", 
+         RowBox[{"\"\<uploader\>\"", "\[Rule]", 
+          RowBox[{"\[LeftAssociation]", 
+           RowBox[{
+            RowBox[{"\"\<login\>\"", "\[Rule]", "\"\<kubaPod\>\""}], ",", 
+            RowBox[{"\"\<id\>\"", "\[Rule]", "15227576"}], ",", 
+            RowBox[{
+            "\"\<avatar_url\>\"", "\[Rule]", 
+             "\"\<https://avatars3.githubusercontent.com/u/15227576?v=3\>\""}]\
+, ",", 
+            RowBox[{"\"\<gravatar_id\>\"", "\[Rule]", "\"\<\>\""}], ",", 
+            RowBox[{
+            "\"\<url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod\>\""}], ",", 
+            RowBox[{
+            "\"\<html_url\>\"", "\[Rule]", 
+             "\"\<https://github.com/kubaPod\>\""}], ",", 
+            RowBox[{
+            "\"\<followers_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/followers\>\""}], ",", 
+            RowBox[{
+            "\"\<following_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/following{/other_user}\
+\>\""}], ",", 
+            RowBox[{
+            "\"\<gists_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/gists{/gist_id}\>\""}],
+             ",", 
+            RowBox[{
+            "\"\<starred_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/starred{/owner}{/repo}\
+\>\""}], ",", 
+            RowBox[{
+            "\"\<subscriptions_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/subscriptions\>\""}], 
+            ",", 
+            RowBox[{
+            "\"\<organizations_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/orgs\>\""}], ",", 
+            RowBox[{
+            "\"\<repos_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/repos\>\""}], ",", 
+            RowBox[{
+            "\"\<events_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/events{/privacy}\>\""}]\
+, ",", 
+            RowBox[{
+            "\"\<received_events_url\>\"", "\[Rule]", 
+             "\"\<https://api.github.com/users/kubaPod/received_events\>\""}],
+             ",", 
+            RowBox[{"\"\<type\>\"", "\[Rule]", "\"\<User\>\""}], ",", 
+            RowBox[{"\"\<site_admin\>\"", "\[Rule]", "False"}]}], 
+           "\[RightAssociation]"}]}], ",", 
+         RowBox[{
+         "\"\<content_type\>\"", "\[Rule]", 
+          "\"\<application/octet-stream\>\""}], ",", 
+         RowBox[{"\"\<state\>\"", "\[Rule]", "\"\<uploaded\>\""}], ",", 
+         RowBox[{"\"\<size\>\"", "\[Rule]", "4412"}], ",", 
+         RowBox[{"\"\<download_count\>\"", "\[Rule]", "7"}], ",", 
+         RowBox[{
+         "\"\<created_at\>\"", "\[Rule]", "\"\<2017-03-19T20:14:35Z\>\""}], 
+         ",", 
+         RowBox[{
+         "\"\<updated_at\>\"", "\[Rule]", "\"\<2017-03-19T20:14:36Z\>\""}], 
+         ",", 
+         RowBox[{
+         "\"\<browser_download_url\>\"", "\[Rule]", 
+          "\"\<https://github.com/kubaPod/MoreStyles/releases/download/v0.1.0/\
+MoreStyles-0.1.0.paclet\>\""}]}], "\[RightAssociation]"}], "}"}]}], ",", 
+     RowBox[{
+     "\"\<tarball_url\>\"", "\[Rule]", 
+      "\"\<https://api.github.com/repos/kubaPod/MoreStyles/tarball/v0.1.0\>\"\
+"}], ",", 
+     RowBox[{
+     "\"\<zipball_url\>\"", "\[Rule]", 
+      "\"\<https://api.github.com/repos/kubaPod/MoreStyles/zipball/v0.1.0\>\"\
+"}], ",", 
+     RowBox[{"\"\<body\>\"", "\[Rule]", "\"\<\>\""}]}], 
+    "\[RightAssociation]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.699123536509314*^9, 
+  3.699123541538314*^9}},ExpressionUUID->"06499fc7-193d-48c4-af51-\
+c07e2a07f62d"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"MatchQ", "[", "\n", "         ", 
+  RowBox[{
+   RowBox[{"KeyValuePattern", "[", 
+    RowBox[{"\"\<assets\>\"", " ", "\[Rule]", " ", "_List"}], " ", "]"}], 
+   "\n", "       ", ",", " ", "json"}], "\n", "       ", "]"}]], "Input",
+ CellChangeTimes->{{3.699123558908814*^9, 
+  3.6991235748708143`*^9}},ExpressionUUID->"24eb5385-9414-43e7-9014-\
+bce44b72772d"],
+
+Cell[BoxData["False"], "Output",
+ CellChangeTimes->{{3.699123563026314*^9, 
+  3.699123575280814*^9}},ExpressionUUID->"9eaf2117-4178-4ac9-8a85-\
+b25d41032e68"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"ReplacePart", "[", 
+  RowBox[{
+   RowBox[{"<|", 
+    RowBox[{
+     RowBox[{"1", "\[Rule]", "val1"}], ",", 
+     RowBox[{"3", "\[Rule]", "val3"}]}], "|>"}], ",", 
+   RowBox[{"2", "\[Rule]", "val3b"}]}], "]"}], "\n", 
+ RowBox[{"ReplacePart", "[", 
+  RowBox[{
+   RowBox[{"<|", 
+    RowBox[{
+     RowBox[{"\"\<1\>\"", "\[Rule]", "val1"}], ",", 
+     RowBox[{"\"\<3\>\"", "\[Rule]", "val3"}]}], "|>"}], ",", 
+   RowBox[{"\"\<3\>\"", "\[Rule]", "val3b"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.699124358954814*^9, 
+  3.699124366013814*^9}},ExpressionUUID->"d514e81c-8840-4b84-9503-\
+a367ed49843f"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"1", "\[Rule]", "val1"}], ",", 
+   RowBox[{"3", "\[Rule]", "val3b"}]}], "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{{3.699124359978814*^9, 
+  3.699124366351314*^9}},ExpressionUUID->"a67b1b6e-4dd0-4be2-af75-\
+c632f76007b8"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"1\"\>", "\[Rule]", "val1"}], ",", 
+   RowBox[{"\<\"3\"\>", "\[Rule]", "val3b"}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{{3.699124359978814*^9, 
+  3.6991243663563137`*^9}},ExpressionUUID->"2cfc8dc1-52cf-48f6-b829-\
+cb6857532350"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"<|", 
+   RowBox[{
+    RowBox[{"2", "\[Rule]", "val2"}], ",", 
+    RowBox[{"1", "\[Rule]", "val1"}]}], "|>"}], "[", 
+  RowBox[{"[", "1", "]"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"<|", 
+   RowBox[{
+    RowBox[{"2", "\[Rule]", "val2"}], ",", 
+    RowBox[{"1", "\[Rule]", "val1"}]}], "|>"}], "[", "1", "]"}]}], "Input",
+ CellChangeTimes->{{3.699124408067814*^9, 
+  3.6991244312833138`*^9}},ExpressionUUID->"125de297-337b-4d22-9421-\
+b83324360265"],
+
+Cell[BoxData["val2"], "Output",
+ CellChangeTimes->{{3.699124424011814*^9, 
+  3.6991244321583138`*^9}},ExpressionUUID->"d70d5dcf-037e-4133-898a-\
+4f0f86bc2b32"],
+
+Cell[BoxData["val1"], "Output",
+ CellChangeTimes->{{3.699124424011814*^9, 
+  3.699124432168314*^9}},ExpressionUUID->"e3696fe1-0e65-4f87-ac21-\
+0f9b913f1712"]
+}, Open  ]],
+
+Cell[BoxData["PrintTemporary"], "Input",
+ CellChangeTimes->{{3.699126028525814*^9, 
+  3.699126030788314*^9}},ExpressionUUID->"aedc3e5e-c439-4e8e-96c2-\
+b963fadc54ee"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Monitor", "[", 
+  RowBox[{
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"Length", "[", 
+      RowBox[{"FactorInteger", "[", 
+       RowBox[{
+        RowBox[{"2", "^", "n"}], "-", "1"}], "]"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"n", ",", "50", ",", "300", ",", "50"}], "}"}]}], "]"}], ",", 
+   "n"}], "]"}]], "Input",ExpressionUUID->"b937353c-689c-4c9e-9508-\
+954c3b31430e"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"7", ",", "12", ",", "13", ",", "18", ",", "11", ",", "25"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{
+  3.699126059519314*^9},ExpressionUUID->"4656b634-5377-440a-ba45-\
+d5eb0a12944a"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"notHere", "[", 
+   RowBox[{
+    RowBox[{"Sequence", "[", "]"}], ",", "Nothing"}], "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"orThere", "//", "Attributes"}], "=", "SequenceHold"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"orThere", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"Sequence", "[", "]"}], "}"}], ",", "Nothing"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.6991526671178007`*^9, 
+  3.6991527353322015`*^9}},ExpressionUUID->"997d2f17-b6f5-4b39-a7d0-\
+681e6d1a9f06"],
+
+Cell[BoxData[
+ RowBox[{"notHere", "[", "Nothing", "]"}]], "Output",
+ CellChangeTimes->{{3.699152723858201*^9, 
+  3.6991527358490014`*^9}},ExpressionUUID->"3877274d-06f8-4e65-bcf0-\
+28c502a961e2"],
+
+Cell[BoxData[
+ RowBox[{"orThere", "[", 
+  RowBox[{
+   RowBox[{"{", "}"}], ",", "Nothing"}], "]"}]], "Output",
+ CellChangeTimes->{{3.699152723858201*^9, 
+  3.699152735864601*^9}},ExpressionUUID->"cd01978c-c92c-4c6e-843c-\
+02f68fea20e4"]
+}, Open  ]]
+},
+WindowSize->{824, 992},
+WindowMargins->{{-1845, Automatic}, {0, Automatic}},
+FrontEndVersion->"11.1 for Microsoft Windows (64-bit) (March 13, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 697, 18, 50, "Input", "ExpressionUUID" -> \
+"3338ff22-0681-4a5e-af65-18e6e8e937f7"],
+Cell[1280, 42, 249, 5, 30, "Output", "ExpressionUUID" -> \
+"dd0a32e2-0bc2-4597-a4bd-578e5842b138"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1566, 52, 251, 5, 50, "Code", "ExpressionUUID" -> \
+"7af2d880-f73c-4e7e-a3d7-d409da3475e7"],
+Cell[1820, 59, 371, 9, 50, "Output", "ExpressionUUID" -> \
+"85996ead-fefd-4cbf-ab79-81b8e7308890"]
+}, Open  ]],
+Cell[2206, 71, 185, 3, 69, "Code", "ExpressionUUID" -> \
+"b1aef068-ec08-4952-94ab-cf9dfa8cf39e"],
+Cell[2394, 76, 409, 12, 50, "Code", "ExpressionUUID" -> \
+"b143ad53-b359-4127-92f0-1c93161e033a"],
+Cell[2806, 90, 530, 13, 105, "Code", "ExpressionUUID" -> \
+"ecb5bc72-15d0-4dca-9190-edac52d11bc3"],
+Cell[CellGroupData[{
+Cell[3361, 107, 718, 15, 50, "Code", "ExpressionUUID" -> \
+"a2511b98-aaa5-4698-adc0-d8f69c01f21e"],
+Cell[4082, 124, 419, 9, 30, "Output", "ExpressionUUID" -> \
+"4f7a6dee-4ecc-458c-9689-da55a8d2e339"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4538, 138, 159, 3, 50, "Code", "ExpressionUUID" -> \
+"c39b5c31-e5d2-43c6-9684-bf68becfbb5c"],
+Cell[4700, 143, 3107, 67, 335, "Output", "ExpressionUUID" -> \
+"178e1e9b-5728-4c0d-9bac-67b3e9c6e0d9"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7844, 215, 294, 7, 50, "Code", "ExpressionUUID" -> \
+"2aa8baeb-137d-47a4-8702-4ed40f640ba8"],
+Cell[8141, 224, 243, 3, 30, "Output", "ExpressionUUID" -> \
+"ff58d867-56ce-459e-b6f8-afafd54a3f15"]
+}, Open  ]],
+Cell[8399, 230, 148, 3, 50, "Code", "ExpressionUUID" -> \
+"10ed55a9-76fd-4fda-bb12-f16142bcbbe2"],
+Cell[CellGroupData[{
+Cell[8572, 237, 192, 4, 50, "Code", "ExpressionUUID" -> \
+"7e882c0b-cd60-48ad-84f0-cd8a500e4d2c"],
+Cell[8767, 243, 563, 11, 50, "Output", "ExpressionUUID" -> \
+"03f95580-3cb7-4c66-870e-428faaccdc47"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9367, 259, 302, 7, 50, "Code", "ExpressionUUID" -> \
+"0029bbdf-6351-4f76-b5bc-5b7759f1edc0"],
+Cell[9672, 268, 1585, 38, 187, "Output", "ExpressionUUID" -> \
+"4853e66a-ae0d-475e-9bca-3f390569ace6"]
+}, Open  ]],
+Cell[11272, 309, 204, 4, 50, "Code", "ExpressionUUID" -> \
+"b515245c-5e40-44d0-8b01-3e9ae4f633e1"],
+Cell[11479, 315, 184, 3, 50, "Code", "ExpressionUUID" -> \
+"ab425dcc-3a60-4498-bf89-df755919af38"],
+Cell[11666, 320, 7544, 174, 810, "Input", "ExpressionUUID" -> \
+"06499fc7-193d-48c4-af51-c07e2a07f62d"],
+Cell[CellGroupData[{
+Cell[19235, 498, 381, 8, 88, "Input", "ExpressionUUID" -> \
+"24eb5385-9414-43e7-9014-bce44b72772d"],
+Cell[19619, 508, 158, 3, 30, "Output", "ExpressionUUID" -> \
+"9eaf2117-4178-4ac9-8a85-b25d41032e68"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19814, 516, 620, 17, 50, "Input", "ExpressionUUID" -> \
+"d514e81c-8840-4b84-9503-a367ed49843f"],
+Cell[20437, 535, 301, 7, 30, "Output", "ExpressionUUID" -> \
+"a67b1b6e-4dd0-4be2-af75-c632f76007b8"],
+Cell[20741, 544, 322, 8, 30, "Output", "ExpressionUUID" -> \
+"2cfc8dc1-52cf-48f6-b829-cb6857532350"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[21100, 557, 496, 14, 50, "Input", "ExpressionUUID" -> \
+"125de297-337b-4d22-9421-b83324360265"],
+Cell[21599, 573, 159, 3, 30, "Output", "ExpressionUUID" -> \
+"d70d5dcf-037e-4133-898a-4f0f86bc2b32"],
+Cell[21761, 578, 157, 3, 30, "Output", "ExpressionUUID" -> \
+"e3696fe1-0e65-4f87-ac21-0f9b913f1712"]
+}, Open  ]],
+Cell[21933, 584, 166, 3, 30, "Input", "ExpressionUUID" -> \
+"aedc3e5e-c439-4e8e-96c2-b963fadc54ee"],
+Cell[CellGroupData[{
+Cell[22124, 591, 416, 12, 30, "Input", "ExpressionUUID" -> \
+"b937353c-689c-4c9e-9508-954c3b31430e"],
+Cell[22543, 605, 223, 6, 30, "Output", "ExpressionUUID" -> \
+"4656b634-5377-440a-ba45-d5eb0a12944a"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[22803, 616, 561, 16, 88, "Input", "ExpressionUUID" -> \
+"997d2f17-b6f5-4b39-a7d0-681e6d1a9f06"],
+Cell[23367, 634, 195, 4, 30, "Output", "ExpressionUUID" -> \
+"3877274d-06f8-4e65-bcf0-28c502a961e2"],
+Cell[23565, 640, 235, 6, 30, "Output", "ExpressionUUID" -> \
+"cd01978c-c92c-4c6e-843c-02f68fea20e4"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
