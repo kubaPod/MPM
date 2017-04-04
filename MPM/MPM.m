@@ -17,7 +17,7 @@ Begin["`Private`"];
     Method \[Rule] Automatic
   };*)
 
-  GitHubPacletInstall::noass = "Couldn't find assets for the release: ``";
+  GitHubPacletInstall::noass = "Couldn't find assets for: ``/``";
 
   GitHubPacletInstall[author_String, paclet_String, version_String:"latest"]:=Module[
     {json, downloads, pacletAssetPattern}
@@ -26,23 +26,29 @@ Begin["`Private`"];
 
   ; Catch[
        json = Import[
-         StringTemplate["https://api.github.com/repos/`1`/`2`/releases/`3`"][author, paclet, version]
-       , "RawJSON"
+           $ReleaseUrlTemplate[author, paclet, version]
+         , "RawJSON"
        ]
-     ; json //Print
+
+     ; json // Print
+
      ; downloads = If[
-         Not @ MatchQ[
-           json
-         , KeyValuePattern["assets" -> _List ? (MemberQ[First @ pacletAssetPattern])]
-         ]
-       , Message[GitHubPacletInstall::noass, version]
-       ; Throw @ $Failed
-       , Cases[json["assets"], pacletAssetPattern ]
+           Not @ MatchQ[
+               json
+             , KeyValuePattern["assets" -> _List ? (MemberQ[First @ pacletAssetPattern])]
+           ]
+
+         , Message[GitHubPacletInstall::noass, paclet, version]
+         ; Throw @ $Failed
+
+         , Cases[json["assets"], pacletAssetPattern ]
        ]
 
      ; GitHubPacletInstall /@ downloads
    ]
-  ]
+  ];
+
+  $ReleaseUrlTemplate = StringTemplate["https://api.github.com/repos/`1`/`2`/releases/`3`"]
 
 
 (*      ; target = FileNameJoin[{CreateDirectory[], "paclet.paclet"}]
