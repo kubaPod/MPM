@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      4504,        132]
-NotebookOptionsPosition[      3379,         97]
-NotebookOutlinePosition[      3724,        112]
-CellTagsIndexPosition[      3681,        109]
+NotebookDataLength[      6485,        196]
+NotebookOptionsPosition[      4655,        143]
+NotebookOutlinePosition[      5000,        158]
+CellTagsIndexPosition[      4957,        155]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -93,7 +93,53 @@ Cell[BoxData[
   RowBox[{"PacletFind", "[", "\"\<MaTeX\>\"", "]"}]}]], "Input",
  CellChangeTimes->{{3.700325348287112*^9, 
   3.7003253649601126`*^9}},ExpressionUUID->"ae2fb516-6ace-4383-96ab-\
-fe472d24dcbd"]
+fe472d24dcbd"],
+
+Cell[CellGroupData[{
+
+Cell["release", "Subsection",
+ CellChangeTimes->{{3.700326080032112*^9, 
+  3.700326081103112*^9}},ExpressionUUID->"46ba871d-2182-47ab-a95f-\
+4aa81dc3fd8a"],
+
+Cell[BoxData[
+ RowBox[{"Needs", "@", "\"\<PacletManager`\>\""}]], "Input",
+ CellChangeTimes->{{3.7003260839951124`*^9, 
+  3.700326087664112*^9}},ExpressionUUID->"2b615c32-bd55-4f67-a514-\
+0a5f9f411e52"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"PacletDirectoryAdd", "@", 
+  RowBox[{"NotebookDirectory", "[", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7003260899381123`*^9, 
+  3.7003260980231123`*^9}},ExpressionUUID->"6dc21a28-b203-44f6-9d14-\
+21f81b9e8b51"],
+
+Cell[BoxData[
+ RowBox[{"{", "\<\"E:\\\\Idea Projects\\\\MorePacletManager\\\\\"\>", 
+  "}"}]], "Output",
+ CellChangeTimes->{
+  3.7003260985931125`*^9},ExpressionUUID->"fd2ebb10-03e7-492b-b246-\
+7facec20daab"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"PacletFind", " ", "@", " ", "\"\<MPM`\>\""}]], "Input",
+ CellChangeTimes->{{3.7003261005271125`*^9, 
+  3.7003261083521123`*^9}},ExpressionUUID->"c9dc626d-b68f-4739-82a1-\
+77f5ae6f9e35"],
+
+Cell[BoxData[
+ RowBox[{"{", "}"}]], "Output",
+ CellChangeTimes->{
+  3.700326109190112*^9},ExpressionUUID->"8222fa02-63c7-49a1-b5b0-\
+b09206e19ff8"]
+}, Open  ]]
+}, Open  ]]
 },
 WindowSize->{1243, 992},
 WindowMargins->{{Automatic, 40}, {-12, Automatic}},
@@ -133,7 +179,25 @@ Cell[2097, 67, 1022, 20, 30, "Output", "ExpressionUUID" -> \
 "6e92641c-4951-407f-b095-67b3530c5854"]
 }, Open  ]],
 Cell[3134, 90, 241, 5, 30, "Input", "ExpressionUUID" -> \
-"ae2fb516-6ace-4383-96ab-fe472d24dcbd"]
+"ae2fb516-6ace-4383-96ab-fe472d24dcbd"],
+Cell[CellGroupData[{
+Cell[3400, 99, 155, 3, 43, "Subsection", "ExpressionUUID" -> \
+"46ba871d-2182-47ab-a95f-4aa81dc3fd8a"],
+Cell[3558, 104, 202, 4, 30, "Input", "ExpressionUUID" -> \
+"2b615c32-bd55-4f67-a514-0a5f9f411e52"],
+Cell[CellGroupData[{
+Cell[3785, 112, 235, 5, 30, "Input", "ExpressionUUID" -> \
+"6dc21a28-b203-44f6-9d14-21f81b9e8b51"],
+Cell[4023, 119, 208, 5, 30, "Output", "ExpressionUUID" -> \
+"fd2ebb10-03e7-492b-b246-7facec20daab"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4268, 129, 209, 4, 30, "Input", "ExpressionUUID" -> \
+"c9dc626d-b68f-4739-82a1-77f5ae6f9e35"],
+Cell[4480, 135, 147, 4, 30, "Output", "ExpressionUUID" -> \
+"8222fa02-63c7-49a1-b5b0-b09206e19ff8"]
+}, Open  ]]
+}, Open  ]]
 }
 ]
 *)
