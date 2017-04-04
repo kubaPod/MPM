@@ -2,53 +2,130 @@
 
 BeginPackage["MPM`"];
 
+  Needs @ "PacletManager`";
 
-  GitHubPacletInstall::usage = "
-      GitHubPacletInstall[author, pacletName] installs paclet distributed via GitHub repository release
-
-  ";
-
+  MPMInstall;
 
 
 Begin["`Private`"];
 
+  MPMInstall // Options = {
+      "Method" -> Automatic
+    , "Logger" -> Automatic
+    (*, "Destination" -> Automatic*)
 
-  (*GitHubPacletInstall // Options = {
-    Method \[Rule] Automatic
-  };*)
 
-  GitHubPacletInstall::noass = "Couldn't find assets for: ``/``";
+  };
 
-  GitHubPacletInstall[author_String, paclet_String, version_String:"latest"]:=Module[
-    {json, downloads, pacletAssetPattern}
+  MPMInstall::noass = "Couldn't find assets for: ``/``";
+  MPMInstall::invmeth = "Unknown method ``";
 
-  , pacletAssetPattern = KeyValuePattern["browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]]:>url
 
-  ; Catch[
-       json = Import[
-           $ReleaseUrlTemplate[author, paclet, version]
-         , "RawJSON"
-       ]
+  MPMInstall::assetsearch = "searching for assets `1`/`2`/`3`";
+  MPMInstall::dload = "downloading ``...";
+  MPMInstall::inst = "installing ``...";
 
-     ; json // Print
 
-     ; downloads = If[
-           Not @ MatchQ[
-               json
-             , KeyValuePattern["assets" -> _List ? (MemberQ[First @ pacletAssetPattern])]
-           ]
 
-         , Message[GitHubPacletInstall::noass, paclet, version]
-         ; Throw @ $Failed
+  MPMInstall[args__, patt:OptionsPattern[]]:= Module[{ method = OptionValue["Method"] }
+    , Block[
+        {$logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger}
 
-         , Cases[json["assets"], pacletAssetPattern ]
-       ]
+        , Switch[ method
+            , Automatic | "GitHubAssets"
+            , GitHubPacletInstall[args, patt]
 
-     ; GitHubPacletInstall /@ downloads
-   ]
+            , _
+            , Message[MPMInstall::invmeth, method]; $Failed
+          ]
+      ]
   ];
 
-  $ReleaseUrlTemplate = StringTemplate["https://api.github.com/repos/`1`/`2`/releases/`3`"]
+  $logger;
+  $DefaultLogger = PrintTemporary;
+
+
+  $ReleaseUrlTemplate = StringTemplate["https://api.github.com/repos/`1`/`2`/releases/`3`"];
+
+  $PacletAssetPattern = KeyValuePattern[
+    "browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]
+  ] :> url;
+
+
+
+  GitHubPacletInstall::usage = "
+        GitHubPacletInstall[author, pacletName] installs paclet distributed via GitHub repository release
+
+    ";
+
+  GitHubPacletInstall // Options = Options @ MPMInstall;
+
+
+  (*TODO: if version is not 'latest' check if it isn't already installed*)
+  (*TODO: consider adding 'Force' option that will force overwriting instead of asking user*)
+  (*TODO: add conditional progress indicator, based on $Notebooks and $logger wrapper*)
+
+  GitHubPacletInstall[author_String, paclet_String, version_String:"latest", patt:OptionsPattern[]]:=Module[
+      {json, downloads}
+
+
+
+    , Catch[
+
+          $logger @ StringTemplate[MPMInstall::assetsearch][  author, paclet, version ]
+
+        ; json = Import[
+              $ReleaseUrlTemplate[author, paclet, version]
+            , "RawJSON"
+          ]
+
+
+        ; downloads = If[
+             Not @ MatchQ[
+                 json
+               , KeyValuePattern["assets" -> _List ? (MemberQ[First @ $PacletAssetPattern])]
+             ]
+
+           , Message[MPMInstall::noass, paclet, version]
+           ; Throw @ $Failed
+
+           , Cases[json["assets"], $PacletAssetPattern ]
+         ]
+
+       ; If[
+             Length @ downloads > 1
+           , GitHubPacletInstall /@ downloads
+           , GitHubPacletInstall @ First @ downloads
+         ]
+     ]
+  ];
+
+  GitHubPacletInstall[
+      url_String
+    , OptionsPattern[]
+  ] /; StringMatchQ[url, "ftp"|"http"~~__~~".paclet"]:= Module[
+      {temp}
+    , temp = FileNameJoin[{$TemporaryDirectory, CreateUUID[] <> ".paclet"}]
+
+    (*TODO: check existence up front*)
+    ;  Catch[
+           $logger @ StringTemplate[MPMInstall::dload] @ FileNameTake[url]
+
+         ; URLSave[url, temp]
+
+         ; If[
+               FileExistsQ @ temp
+             , $logger @ StringTemplate[MPMInstall::inst] @ FileNameTake[url]
+             ; PacletInstall @ temp
+
+             , Throw @ $Failed
+           ]
+       ]
+
+
+  ];
+
+
 
 
 (*      ; target = FileNameJoin[{CreateDirectory[], "paclet.paclet"}]
