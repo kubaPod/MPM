@@ -43,7 +43,6 @@ e.g.:
 ### Creating compatible releases
 
 
-
 - create .paclet
 
       Needs @ "PacletManager`" (*built-in in Mathematica V10+*)
@@ -51,9 +50,21 @@ e.g.:
       
 - draft a release in your github repository
 - attach previously generated .paclet to the release
-- done, your paclet can be installed with 
+- done, your paclet can be installed with MPM
 
-      MPMInstall[you, yourPackage]
+  But a potential user needs to have ``MPM` ``, the idea is 
+ to have the following script included in your repository README:
+  
+      Import["https://raw.githubusercontent.com/kubapod/mpm/master/install.m"]
+      MPM`MPMInstall["szhorvat", "matex"]
+      
+  ``MPM` `` is not necessary in this case but if used in one line, the name won't be parsed correctly. So just in case.
+    
+    
+
+     
+      
+
       
       
       
