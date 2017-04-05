@@ -33,6 +33,8 @@ e.g.:
     MPMInstall["szhorvat", "MaTeX"]
      
     MPMInstall["kubapod", "MoreStyles"]
+     
+    MPMInstall["szhorvat", "matex", "v1.6.3", "IgnoreVersion" -> True]
     
 ## Tips for developers    
 

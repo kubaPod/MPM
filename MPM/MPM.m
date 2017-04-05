@@ -10,11 +10,9 @@ BeginPackage["MPM`"];
 Begin["`Private`"];
 
   MPMInstall // Options = {
-      "Method" -> Automatic
-    , "Logger" -> Automatic
-    (*, "Destination" -> Automatic*)
-
-
+        "Method" -> Automatic
+      , "Logger" -> Automatic
+      (*, "Destination" -> Automatic*)
   };
 
   MPMInstall::noass = "Couldn't find assets for: ``/``";
@@ -27,10 +25,16 @@ Begin["`Private`"];
 
 
     (*TODO: pass down options suitable for PacletInstall*)
-  MPMInstall[args__, patt:OptionsPattern[]]:= Module[{ method = OptionValue["Method"] }
-    , Block[
-        {$logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger}
+  MPMInstall[
+      args__
+    , patt : OptionsPattern[{MPMInstall, PacletInstall}]
 
+  ]:= Module[
+      { method = OptionValue["Method"]
+      }
+    , Block[
+        {$logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger
+        }
         , Switch[ method
             , Automatic | "gh-assets-paclet"
             , GitHubAssetInstall[args, patt]
@@ -44,8 +48,12 @@ Begin["`Private`"];
     (*TODO: once PacletInstall supports https it will probably go*)
   MPMInstall[
       url_String /; StringMatchQ[url, "http"|"ftp"~~__~~".paclet"]
-    , OptionsPattern[]
-  ] /; StringMatchQ[url, "ftp"|"http"~~__~~".paclet"]:= Module[ {temp}
+    , patt : OptionsPattern[{MPMInstall, PacletInstall}]
+
+  ] /; StringMatchQ[url, "ftp"|"http"~~__~~".paclet"]:= Module[
+      { temp
+      , piOps = FilterRules[{patt}, Options[PacletInstall]]
+      }
 
     , temp = FileNameJoin[{$TemporaryDirectory, CreateUUID[] <> ".paclet"}]
 
@@ -58,7 +66,7 @@ Begin["`Private`"];
          ; If[
                FileExistsQ @ temp
              , $logger @ StringTemplate[MPMInstall::inst] @ FileNameTake[url]
-             ; PacletInstall @ temp
+             ; PacletInstall[ temp, piOps]
 
              , Throw @ $Failed
            ]
@@ -95,38 +103,46 @@ Begin["`Private`"];
   (*TODO: consider adding 'Force' option that will force overwriting instead of asking user*)
   (*TODO: add conditional progress indicator, based on $Notebooks and $logger wrapper*)
 
-  GitHubAssetInstall[author_String, paclet_String, version_String:"latest", patt:OptionsPattern[]]:=Module[
-    {json, downloads}
+  GitHubAssetInstall[
+      author_String
+    , paclet_String
+    , version_String:"latest"
+    , patt : OptionsPattern[{GitHubAssetInstall, PacletInstall}]
 
-
+  ]:=Module[
+      { json
+      , downloads
+      , pacletInstall
+      , piOps = FilterRules[{patt}, Options[PacletInstall]]
+      }
 
     , Catch[
 
-      $logger @ StringTemplate[MPMInstall::assetsearch][  author, paclet, version ]
+          $logger @ StringTemplate[MPMInstall::assetsearch][  author, paclet, version ]
 
-      ; json = Import[
-        $ReleaseUrlTemplate[author, paclet, version]
-        , "RawJSON"
-      ]
-
-
-      ; downloads = If[
-        Not @ MatchQ[
-          json
-          , KeyValuePattern["assets" -> _List ? (MemberQ[First @ $PacletAssetPattern])]
+        ; json = Import[
+          $ReleaseUrlTemplate[author, paclet, version]
+          , "RawJSON"
         ]
 
-        , Message[MPMInstall::noass, paclet, version]
-        ; Throw @ $Failed
 
-        , Cases[json["assets"], $PacletAssetPattern ]
-      ]
+        ; downloads = If[
+          Not @ MatchQ[
+            json
+            , KeyValuePattern["assets" -> _List ? (MemberQ[First @ $PacletAssetPattern])]
+          ]
 
-      ; If[
-        Length @ downloads > 1
-        , MPMInstall /@ downloads
-        , MPMInstall @ First @ downloads
-      ]
+          , Message[MPMInstall::noass, paclet, version]
+          ; Throw @ $Failed
+
+          , Cases[json["assets"], $PacletAssetPattern ]
+        ]
+
+        ; If[
+          Length @ downloads > 1
+          , MPMInstall[#, piOps]& /@ downloads
+          , MPMInstall[First @ downloads, piOps]
+        ]
     ]
   ];
 
