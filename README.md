@@ -4,9 +4,9 @@ Package supporting advanced installation / management of paclets in Wolfram Math
 
 We are just starting so the functionality is limited and bugs are hiding behind corners. So feedback appreciated!
 
-**Currently it allows** to automatically install paclets released in .paclet form as assets of github releases.
+Currently it allows to automatically install paclets released in .paclet form as assets of github releases.
 
-### Comming soon
+### Coming soon
 
  - support for different release types 
  - better documentation
@@ -33,7 +33,13 @@ e.g.:
     MPMInstall["szhorvat", "MaTeX"]
      
     MPMInstall["kubapod", "MoreStyles"]
+    
+## Tips for developers    
 
+### Versioning
+
+ Quite often paclets are identified with `x.y.z` tag while associated tag/release is `vx.y.z`. 
+ 
 ### Creating compatible releases
 
 
