@@ -32,7 +32,7 @@ Begin["`Private`"];
         {$logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger}
 
         , Switch[ method
-            , Automatic | "GitHubAssets"
+            , Automatic | "gh-assets-paclet"
             , GitHubAssetInstall[args, patt]
 
             , _
@@ -72,7 +72,9 @@ Begin["`Private`"];
   $DefaultLogger = PrintTemporary;
 
 
-  $ReleaseUrlTemplate = StringTemplate["https://api.github.com/repos/`1`/`2`/releases/`3`"];
+  $ReleaseUrlTemplate = StringTemplate[
+    "https://api.github.com/repos/`1`/`2`/releases/<* If[#3=!=\"latest\", \"tags/\", \"\"] *>`3`"
+  ];
 
   $PacletAssetPattern = KeyValuePattern[
     "browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]
