@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      6485,        196]
-NotebookOptionsPosition[      4655,        143]
-NotebookOutlinePosition[      5000,        158]
-CellTagsIndexPosition[      4957,        155]
+NotebookDataLength[      7261,        211]
+NotebookOptionsPosition[      5429,        158]
+NotebookOutlinePosition[      5774,        173]
+CellTagsIndexPosition[      5731,        170]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -112,32 +112,47 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"PacletDirectoryAdd", "@", 
-  RowBox[{"NotebookDirectory", "[", "]"}]}]], "Input",
- CellChangeTimes->{{3.7003260899381123`*^9, 
-  3.7003260980231123`*^9}},ExpressionUUID->"6dc21a28-b203-44f6-9d14-\
+  RowBox[{"FileNameJoin", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<MPM\>\""}], "}"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7003260899381123`*^9, 3.7003260980231123`*^9}, {
+  3.700327892577112*^9, 3.7003278998721123`*^9}, {3.7003283672321124`*^9, 
+  3.700328369513112*^9}},ExpressionUUID->"6dc21a28-b203-44f6-9d14-\
 21f81b9e8b51"],
 
 Cell[BoxData[
- RowBox[{"{", "\<\"E:\\\\Idea Projects\\\\MorePacletManager\\\\\"\>", 
-  "}"}]], "Output",
- CellChangeTimes->{
-  3.7003260985931125`*^9},ExpressionUUID->"fd2ebb10-03e7-492b-b246-\
-7facec20daab"]
+ RowBox[{"{", "\<\"E:\\\\Idea Projects\\\\MPM\\\\MPM\"\>", "}"}]], "Output",
+ CellChangeTimes->{3.7003260985931125`*^9, 3.7003278533381124`*^9, 
+  3.7003283704381123`*^9, 
+  3.7003284264751124`*^9},ExpressionUUID->"8b769491-ce07-4499-872b-\
+39a97a725a73"]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
- RowBox[{"PacletFind", " ", "@", " ", "\"\<MPM`\>\""}]], "Input",
- CellChangeTimes->{{3.7003261005271125`*^9, 
-  3.7003261083521123`*^9}},ExpressionUUID->"c9dc626d-b68f-4739-82a1-\
+ RowBox[{"PacletFind", " ", "@", " ", "\"\<MPM\>\""}]], "Input",
+ CellChangeTimes->{{3.7003261005271125`*^9, 3.7003261083521123`*^9}, 
+   3.7003284092411127`*^9},ExpressionUUID->"c9dc626d-b68f-4739-82a1-\
 77f5ae6f9e35"],
 
 Cell[BoxData[
- RowBox[{"{", "}"}]], "Output",
+ RowBox[{"{", 
+  InterpretationBox[
+   RowBox[{
+   "Paclet", "[", "\<\"MPM\"\>", ",", "\<\"0.1.0\"\>", ",", "<>", "]"}],
+   PacletManager`Paclet[
+   "Name" -> "MPM", "Version" -> "0.1.0", "MathematicaVersion" -> "11+", 
+    "Description" -> "", "Creator" -> "Jakub (Kuba) Podkalicki", 
+    "Extensions" -> {{"Kernel", "Context" -> "MPM`"}}, "Location" -> 
+    "E:\\Idea Projects\\MPM\\MPM"]], "}"}]], "Output",
  CellChangeTimes->{
-  3.700326109190112*^9},ExpressionUUID->"8222fa02-63c7-49a1-b5b0-\
-b09206e19ff8"]
+  3.700326109190112*^9, 3.7003278545731125`*^9, 3.7003283729701123`*^9, {
+   3.7003284096161127`*^9, 
+   3.7003284272361126`*^9}},ExpressionUUID->"8a945a13-a679-4752-a89a-\
+a501f2bf5de6"]
 }, Open  ]]
 }, Open  ]]
 },
@@ -186,16 +201,16 @@ Cell[3400, 99, 155, 3, 43, "Subsection", "ExpressionUUID" -> \
 Cell[3558, 104, 202, 4, 30, "Input", "ExpressionUUID" -> \
 "2b615c32-bd55-4f67-a514-0a5f9f411e52"],
 Cell[CellGroupData[{
-Cell[3785, 112, 235, 5, 30, "Input", "ExpressionUUID" -> \
+Cell[3785, 112, 439, 10, 30, "Input", "ExpressionUUID" -> \
 "6dc21a28-b203-44f6-9d14-21f81b9e8b51"],
-Cell[4023, 119, 208, 5, 30, "Output", "ExpressionUUID" -> \
-"fd2ebb10-03e7-492b-b246-7facec20daab"]
+Cell[4227, 124, 269, 5, 30, "Output", "ExpressionUUID" -> \
+"8b769491-ce07-4499-872b-39a97a725a73"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[4268, 129, 209, 4, 30, "Input", "ExpressionUUID" -> \
+Cell[4533, 134, 233, 4, 30, "Input", "ExpressionUUID" -> \
 "c9dc626d-b68f-4739-82a1-77f5ae6f9e35"],
-Cell[4480, 135, 147, 4, 30, "Output", "ExpressionUUID" -> \
-"8222fa02-63c7-49a1-b5b0-b09206e19ff8"]
+Cell[4769, 140, 632, 14, 30, "Output", "ExpressionUUID" -> \
+"8a945a13-a679-4752-a89a-a501f2bf5de6"]
 }, Open  ]]
 }, Open  ]]
 }
