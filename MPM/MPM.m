@@ -9,7 +9,22 @@ BeginPackage["MPM`"];
 
 Begin["`Private`"];
 
-  MPMInstall // Options = {
+
+
+  $DefaultLogger = Print;
+
+
+  $ReleaseUrlTemplate = StringTemplate[
+    "https://api.github.com/repos/`1`/`2`/releases/<* If[#3=!=\"latest\", \"tags/\", \"\"] *>`3`"
+  ];
+
+  $PacletAssetPattern = KeyValuePattern[
+    "browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]
+  ] :> url;
+
+
+
+MPMInstall // Options = {
         "Method" -> Automatic
       , "Logger" -> Automatic
       (*, "Destination" -> Automatic*)
@@ -19,30 +34,26 @@ Begin["`Private`"];
   MPMInstall::invmeth = "Unknown method ``";
 
 
-  MPMInstall::assetsearch = "searching for assets `1`/`2`/`3`";
-  MPMInstall::dload = "downloading ``...";
-  MPMInstall::inst = "installing ``...";
+  MPMInstall::assetsearch = "Searching for assets `1`/`2`/`3`";
+  MPMInstall::dload = "Downloading ``...";
+  MPMInstall::inst = "Installing ``...";
 
 
-    (*TODO: pass down options suitable for PacletInstall*)
+
   MPMInstall[
       args__
     , patt : OptionsPattern[{MPMInstall, PacletInstall}]
 
-  ]:= Module[
-      { method = OptionValue["Method"]
-      }
-    , Block[
-        {$logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger
-        }
-        , Switch[ method
-            , Automatic | "gh-assets-paclet"
-            , GitHubAssetInstall[args, patt]
+  ]:= Module[ { method = OptionValue["Method"] }
 
-            , _
-            , Message[MPMInstall::invmeth, method]; $Failed
-          ]
+    , Switch[ method
+        , Automatic | "gh-assets-paclet"
+        , GitHubAssetInstall[args, patt]
+
+        , _
+        , Message[MPMInstall::invmeth, method]; $Failed
       ]
+
   ];
 
     (*TODO: once PacletInstall supports https it will probably go*)
@@ -50,9 +61,10 @@ Begin["`Private`"];
       url_String /; StringMatchQ[url, "http"|"ftp"~~__~~".paclet"]
     , patt : OptionsPattern[{MPMInstall, PacletInstall}]
 
-  ] /; StringMatchQ[url, "ftp"|"http"~~__~~".paclet"]:= Module[
+  ]:= Module[
       { temp
       , piOps = FilterRules[{patt}, Options[PacletInstall]]
+      , $logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger
       }
 
     , temp = FileNameJoin[{$TemporaryDirectory, CreateUUID[] <> ".paclet"}]
@@ -76,20 +88,7 @@ Begin["`Private`"];
   ];
 
 
-  $logger;
-  $DefaultLogger = PrintTemporary;
-
-
-  $ReleaseUrlTemplate = StringTemplate[
-    "https://api.github.com/repos/`1`/`2`/releases/<* If[#3=!=\"latest\", \"tags/\", \"\"] *>`3`"
-  ];
-
-  $PacletAssetPattern = KeyValuePattern[
-    "browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]
-  ] :> url;
-
-
-
+  WithPacletRepository[]
 
   GitHubAssetInstall::usage = "
           GitHubAssetInstall[author, pacletName] installs paclet distributed via GitHub repository release
@@ -113,7 +112,7 @@ Begin["`Private`"];
       { json
       , downloads
       , pacletInstall
-      , piOps = FilterRules[{patt}, Options[PacletInstall]]
+      , $logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger
       }
 
     , Catch[
@@ -139,9 +138,9 @@ Begin["`Private`"];
         ]
 
         ; If[
-          Length @ downloads > 1
-          , MPMInstall[#, piOps]& /@ downloads
-          , MPMInstall[First @ downloads, piOps]
+            Length @ downloads > 1
+          , MPMInstall[#, patt]& /@ downloads
+          , MPMInstall[First @ downloads, patt]
         ]
     ]
   ];

@@ -10,16 +10,14 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     12759,        346]
-NotebookOptionsPosition[      9920,        273]
-NotebookOutlinePosition[     10266,        288]
-CellTagsIndexPosition[     10223,        285]
+NotebookDataLength[      9388,        267]
+NotebookOptionsPosition[      6822,        202]
+NotebookOutlinePosition[      7168,        217]
+CellTagsIndexPosition[      7125,        214]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
-
-Cell[CellGroupData[{
 Cell[BoxData[
  RowBox[{"SetDirectory", "@", 
   RowBox[{"NotebookDirectory", "[", "]"}]}]], "Input",
@@ -27,19 +25,11 @@ Cell[BoxData[
   3.700225027016409*^9}},ExpressionUUID->"664b6120-5523-4b73-b80a-\
 2fbf5eff08ac"],
 
-Cell[BoxData["\<\"E:\\\\Idea Projects\\\\MPM\"\>"], "Output",
- CellChangeTimes->{
-  3.7004182397051373`*^9},ExpressionUUID->"27b6011a-092d-4cc7-9f93-\
-1c125c45e969"]
-}, Open  ]],
-
 Cell[BoxData[
  RowBox[{"<<", "MPM`"}]], "Input",
  CellChangeTimes->{{3.7002250354624085`*^9, 
   3.7002250377604084`*^9}},ExpressionUUID->"c9cecd99-24aa-41a9-9f1e-\
 6fd45c992007"],
-
-Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"MPMInstall", "[", 
@@ -49,14 +39,6 @@ Cell[BoxData[
   3.700225319306409*^9, 3.700225325490409*^9}, {3.7003174848161125`*^9, 
   3.700317485546112*^9}},ExpressionUUID->"7af2d880-f73c-4e7e-a3d7-\
 d409da3475e7"],
-
-Cell[BoxData["$Failed"], "Output",
- CellChangeTimes->{
-  3.700418245105737*^9},ExpressionUUID->"c14aa03b-f616-4d77-966e-\
-c22efd9437a0"]
-}, Open  ]],
-
-Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"MPMInstall", "[", 
@@ -72,81 +54,10 @@ Cell[BoxData[
 4d2e3d09ebc3"],
 
 Cell[BoxData[
- InterpretationBox[
-  RowBox[{
-  "Paclet", "[", "\<\"MaTeX\"\>", ",", "\<\"1.6.3\"\>", ",", "<>", "]"}],
-  PacletManager`Paclet[
-  "Name" -> "MaTeX", "Version" -> "1.6.3", "MathematicaVersion" -> "10.0+", 
-   "Description" -> "Create LaTeX-typeset labels within Mathematica.", 
-   "Creator" -> "Szabolcs Horv\[AAcute]t <szhorvat@gmail.com>", "URL" -> 
-   "https://github.com/szhorvat/MaTeX", "Thumbnail" -> "Logo.png", 
-   "Extensions" -> {{
-     "Documentation", "Language" -> "English", "MainPage" -> 
-      "Guides/MaTeX"}, {"Kernel", "Root" -> ".", "Context" -> "MaTeX`"}}, 
-   "Location" -> 
-   "C:\\Users\\user\\AppData\\Roaming\\Mathematica\\Paclets\\Repository\\\
-MaTeX-1.6.3"]]], "Output",
- CellChangeTimes->{{3.700418259159337*^9, 
-  3.7004183024081373`*^9}},ExpressionUUID->"555840ec-8725-4999-b47b-\
-a6c90671c97c"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
  RowBox[{"PacletFind", "[", "\"\<MaTeX\>\"", "]"}]], "Input",
  CellChangeTimes->{{3.700418305559538*^9, 
   3.7004183139601374`*^9}},ExpressionUUID->"ac7208db-c3bb-4db1-a319-\
 1b38307c64c1"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   InterpretationBox[
-    RowBox[{
-    "Paclet", "[", "\<\"MaTeX\"\>", ",", "\<\"1.7.0\"\>", ",", "<>", "]"}],
-    PacletManager`Paclet[
-    "Name" -> "MaTeX", "Version" -> "1.7.0", "MathematicaVersion" -> "10.0+", 
-     "Description" -> "Create LaTeX-typeset labels within Mathematica.", 
-     "Creator" -> "Szabolcs Horv\[AAcute]t <szhorvat@gmail.com>", "URL" -> 
-     "https://github.com/szhorvat/MaTeX", "Thumbnail" -> "Logo.png", 
-     "Extensions" -> {{
-       "Documentation", "Language" -> "English", "MainPage" -> 
-        "Guides/MaTeX"}, {"Kernel", "Root" -> ".", "Context" -> "MaTeX`"}}, 
-     "Location" -> 
-     "C:\\Users\\user\\AppData\\Roaming\\Mathematica\\Paclets\\Repository\\\
-MaTeX-1.7.0"]], ",", 
-   InterpretationBox[
-    RowBox[{
-    "Paclet", "[", "\<\"MaTeX\"\>", ",", "\<\"1.6.3\"\>", ",", "<>", "]"}],
-    PacletManager`Paclet[
-    "Name" -> "MaTeX", "Version" -> "1.6.3", "MathematicaVersion" -> "10.0+", 
-     "Description" -> "Create LaTeX-typeset labels within Mathematica.", 
-     "Creator" -> "Szabolcs Horv\[AAcute]t <szhorvat@gmail.com>", "URL" -> 
-     "https://github.com/szhorvat/MaTeX", "Thumbnail" -> "Logo.png", 
-     "Extensions" -> {{
-       "Documentation", "Language" -> "English", "MainPage" -> 
-        "Guides/MaTeX"}, {"Kernel", "Root" -> ".", "Context" -> "MaTeX`"}}, 
-     "Location" -> 
-     "C:\\Users\\user\\AppData\\Roaming\\Mathematica\\Paclets\\Repository\\\
-MaTeX-1.6.3"]], ",", 
-   InterpretationBox[
-    RowBox[{
-    "Paclet", "[", "\<\"MaTeX\"\>", ",", "\<\"1.6.2\"\>", ",", "<>", "]"}],
-    PacletManager`Paclet[
-    "Name" -> "MaTeX", "Version" -> "1.6.2", "MathematicaVersion" -> "10.0+", 
-     "Description" -> "Create LaTeX-typeset labels within Mathematica.", 
-     "Creator" -> "Szabolcs Horv\[AAcute]t", 
-     "Extensions" -> {{
-       "Documentation", "Language" -> "English", "MainPage" -> 
-        "Guides/MaTeX"}, {"Kernel", "Root" -> ".", "Context" -> "MaTeX`"}}, 
-     "Location" -> 
-     "C:\\Users\\user\\AppData\\Roaming\\Mathematica\\Paclets\\Repository\\\
-MaTeX-1.6.2"]]}], "}"}]], "Output",
- CellChangeTimes->{
-  3.7004183147713375`*^9},ExpressionUUID->"f817d8ba-7b92-4d90-a01a-\
-2017e43b763f"]
-}, Open  ]],
 
 Cell[BoxData["MPM`Private`$ReleaseUrlTemplate"], "Input",ExpressionUUID->"49efd5c8-c161-4d07-bed7-79e761fb7ced"],
 
@@ -205,6 +116,8 @@ Cell[BoxData[
   3.700328369513112*^9}},ExpressionUUID->"6dc21a28-b203-44f6-9d14-\
 21f81b9e8b51"],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[
  RowBox[{"PacletUninstall", "/@", 
   RowBox[{"PacletFind", " ", "@", " ", "\"\<MPM\>\""}]}]], "Input",
@@ -212,6 +125,15 @@ Cell[BoxData[
    3.7003284092411127`*^9, {3.700415917737623*^9, 
    3.700415926013623*^9}},ExpressionUUID->"c9dc626d-b68f-4739-82a1-\
 77f5ae6f9e35"],
+
+Cell[BoxData[
+ RowBox[{"{", "}"}]], "Output",
+ CellChangeTimes->{
+  3.700418473021739*^9},ExpressionUUID->"cecd9f03-2ef0-4ccc-ab4b-\
+12daf6464f87"]
+}, Open  ]],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"PackPaclet", "@", 
@@ -222,7 +144,14 @@ Cell[BoxData[
    "]"}]}]], "Input",
  CellChangeTimes->{{3.70040010602831*^9, 3.7004001205303097`*^9}, 
    3.7004001564123096`*^9},ExpressionUUID->"96faf26e-1c12-4622-a97f-\
-f30a61ae6133"]
+f30a61ae6133"],
+
+Cell[BoxData["\<\"E:\\\\Idea Projects\\\\MPM\\\\MPM-0.1.2.paclet\"\>"], \
+"Output",
+ CellChangeTimes->{
+  3.7004184811647387`*^9},ExpressionUUID->"a972b745-6528-467f-ba07-\
+7acb15b11854"]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -287,65 +216,57 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[CellGroupData[{
-Cell[580, 22, 225, 5, 30, "Input", "ExpressionUUID" -> \
+Cell[558, 20, 225, 5, 30, "Input", "ExpressionUUID" -> \
 "664b6120-5523-4b73-b80a-2fbf5eff08ac"],
-Cell[808, 29, 165, 3, 30, "Output", "ExpressionUUID" -> \
-"27b6011a-092d-4cc7-9f93-1c125c45e969"]
-}, Open  ]],
-Cell[988, 35, 178, 4, 30, "Input", "ExpressionUUID" -> \
+Cell[786, 27, 178, 4, 30, "Input", "ExpressionUUID" -> \
 "c9cecd99-24aa-41a9-9f1e-6fd45c992007"],
-Cell[CellGroupData[{
-Cell[1191, 43, 372, 7, 34, "Code", "ExpressionUUID" -> \
+Cell[967, 33, 372, 7, 34, "Code", "ExpressionUUID" -> \
 "7af2d880-f73c-4e7e-a3d7-d409da3475e7",
  InitializationCell->False],
-Cell[1566, 52, 136, 3, 30, "Output", "ExpressionUUID" -> \
-"c14aa03b-f616-4d77-966e-c22efd9437a0"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[1739, 60, 646, 11, 30, "Input", "ExpressionUUID" -> \
+Cell[1342, 42, 646, 11, 30, "Input", "ExpressionUUID" -> \
 "84cfd7c7-139b-46a4-a23d-4d2e3d09ebc3"],
-Cell[2388, 73, 840, 17, 30, "Output", "ExpressionUUID" -> \
-"555840ec-8725-4999-b47b-a6c90671c97c"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[3265, 95, 203, 4, 30, "Input", "ExpressionUUID" -> \
+Cell[1991, 55, 203, 4, 30, "Input", "ExpressionUUID" -> \
 "ac7208db-c3bb-4db1-a319-1b38307c64c1"],
-Cell[3471, 101, 2217, 46, 30, "Output", "ExpressionUUID" -> \
-"f817d8ba-7b92-4d90-a01a-2017e43b763f"]
-}, Open  ]],
-Cell[5703, 150, 112, 0, 30, "Input", "ExpressionUUID" -> \
+Cell[2197, 61, 112, 0, 30, "Input", "ExpressionUUID" -> \
 "49efd5c8-c161-4d07-bed7-79e761fb7ced"],
-Cell[5818, 152, 298, 7, 30, "Input", "ExpressionUUID" -> \
+Cell[2312, 63, 298, 7, 30, "Input", "ExpressionUUID" -> \
 "28253587-09df-42e7-9db5-3b5928656d72"],
-Cell[6119, 161, 495, 12, 69, "Input", "ExpressionUUID" -> \
+Cell[2613, 72, 495, 12, 69, "Input", "ExpressionUUID" -> \
 "a086f9a2-51d2-4ac3-b4c1-da4e28f11461"],
-Cell[6617, 175, 241, 5, 30, "Input", "ExpressionUUID" -> \
+Cell[3111, 86, 241, 5, 30, "Input", "ExpressionUUID" -> \
 "ae2fb516-6ace-4383-96ab-fe472d24dcbd"],
 Cell[CellGroupData[{
-Cell[6883, 184, 155, 3, 43, "Subsection", "ExpressionUUID" -> \
+Cell[3377, 95, 155, 3, 43, "Subsection", "ExpressionUUID" -> \
 "46ba871d-2182-47ab-a95f-4aa81dc3fd8a"],
-Cell[7041, 189, 202, 4, 30, "Input", "ExpressionUUID" -> \
+Cell[3535, 100, 202, 4, 30, "Input", "ExpressionUUID" -> \
 "2b615c32-bd55-4f67-a514-0a5f9f411e52"],
-Cell[7246, 195, 439, 10, 30, "Input", "ExpressionUUID" -> \
+Cell[3740, 106, 439, 10, 30, "Input", "ExpressionUUID" -> \
 "6dc21a28-b203-44f6-9d14-21f81b9e8b51"],
-Cell[7688, 207, 321, 6, 30, "Input", "ExpressionUUID" -> \
+Cell[CellGroupData[{
+Cell[4204, 120, 321, 6, 30, "Input", "ExpressionUUID" -> \
 "c9dc626d-b68f-4739-82a1-77f5ae6f9e35"],
-Cell[8012, 215, 354, 9, 30, "Input", "ExpressionUUID" -> \
-"96faf26e-1c12-4622-a97f-f30a61ae6133"]
+Cell[4528, 128, 147, 4, 30, "Output", "ExpressionUUID" -> \
+"cecd9f03-2ef0-4ccc-ab4b-12daf6464f87"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[8403, 229, 152, 3, 43, "Subsection", "ExpressionUUID" -> \
+Cell[4712, 137, 354, 9, 30, "Input", "ExpressionUUID" -> \
+"96faf26e-1c12-4622-a97f-f30a61ae6133"],
+Cell[5069, 148, 187, 4, 30, "Output", "ExpressionUUID" -> \
+"a972b745-6528-467f-ba07-7acb15b11854"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5305, 158, 152, 3, 43, "Subsection", "ExpressionUUID" -> \
 "3cfeeef3-1ca6-4dc6-86a3-bc23923ccfac"],
-Cell[8558, 234, 262, 6, 30, "Input", "ExpressionUUID" -> \
+Cell[5460, 163, 262, 6, 30, "Input", "ExpressionUUID" -> \
 "6c9eed54-4103-430d-a6d6-34e2c5afb2f7"],
-Cell[8823, 242, 246, 5, 30, "Input", "ExpressionUUID" -> \
+Cell[5725, 171, 246, 5, 30, "Input", "ExpressionUUID" -> \
 "515ed60b-f053-44ac-94fb-094c4a32b03e"],
-Cell[9072, 249, 196, 4, 30, "Input", "ExpressionUUID" -> \
+Cell[5974, 178, 196, 4, 30, "Input", "ExpressionUUID" -> \
 "54981af7-0cd3-4212-bdc5-4445dd7245ea"],
-Cell[9271, 255, 246, 5, 30, "Input", "ExpressionUUID" -> \
+Cell[6173, 184, 246, 5, 30, "Input", "ExpressionUUID" -> \
 "c3410328-77c7-4a6f-81d8-41c062fd6b87"],
-Cell[9520, 262, 384, 8, 50, "Input", "ExpressionUUID" -> \
+Cell[6422, 191, 384, 8, 50, "Input", "ExpressionUUID" -> \
 "d6118a73-d5b9-4794-8f66-2fc833f8bd2a"]
 }, Open  ]]
 }

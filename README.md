@@ -6,6 +6,8 @@ We are just starting so the functionality is limited and bugs are hiding behind 
 
 Currently it allows to automatically install paclets released in .paclet form as assets of github releases.
 
+
+
 ### Coming soon
 
  - support for different release types 
