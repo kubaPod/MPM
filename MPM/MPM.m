@@ -25,7 +25,7 @@ Begin["`Private`"];
 
 
 
-MPMInstall // Options = {
+  MPMInstall // Options = {
         "Method" -> Automatic
       , "Logger" -> Automatic
       , "Destination" -> Automatic
@@ -89,6 +89,16 @@ MPMInstall // Options = {
 
   ];
 
+
+
+
+
+    (*Haven't found a trace of any option designed for this so we are using this helper function
+      to install paclet is desired directory.
+      One should expect that the option IgnoreVersion -> True should be added too in order to
+      ignore available paclets during installation/copying a specific paclet to e.g. dependencies
+    *)
+
   WithPacletRepository::usage = "WithPacletRepository[dir][proc] creates environment for proc such that"<>
       " the PacletManager assumes dir to be user paclets' repository directory. "<>
       "The main purpose is to use with PacletInstall so that the paclet is installet e.g. in out dependencies folder.";
@@ -102,6 +112,28 @@ MPMInstall // Options = {
   ];
 
   WithPacletRepository[Automatic] = Identity;
+
+
+
+
+
+    (*In future we need to know whether desired paclets are in a specific directory regardless
+      whether they are in others. PacletFind "Location" checks only for the paclet directory
+      and can't understand paclet parent directory. It also checks with SameQ :( this wrapper should help
+
+    So if you have MyPaclet installed in paclets/repository/folder you can confimr that with:
+
+    PacletFind["MyPaclet", "Location" -> PacletRepository["paclets/repository/folder"]]
+
+    otherwise one would have to use paclets/repository/folder/MyPalcet, which makes it pretty useless
+    unless we want to confirm a specific paclet is exactly where we expect it*)
+
+  PacletRepository::usage = "Symbolic wrapper for directory used as PacletFind's location.";
+  PacletRepository // ClearAll;
+  PacletRepository /: SameQ[pacletDir_, PacletRepository[dir_]] := StringMatchQ[
+    pacletDir, dir ~~ __
+  ];
+
 
 
   GitHubAssetInstall::usage = "
