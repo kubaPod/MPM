@@ -28,6 +28,11 @@ Currently it allows to automatically install paclets released in .paclet form as
         author     : _String
       , pacletName : _String
       , version    : _String : "latest"
+      , OptionsPattern[{
+            PacletInstall,
+            "Destination" -> Automatic | _?DirectoryQ,
+            "Logger"      -> Print
+        }]
     ]
 
 e.g.:

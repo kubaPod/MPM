@@ -10,7 +10,8 @@ BeginPackage["MPM`"];
 
 Begin["`Private`"];
 
-
+(*TODO: check whether the paclet can be found after it is installed.
+  If it is not, inform user that it probably doesn't meet requirements*)
 
   $DefaultLogger = Print;
 
@@ -64,28 +65,46 @@ Begin["`Private`"];
 
   ]:= Module[
       { temp
-      , piOps = FilterRules[{patt}, Options[PacletInstall]]
-      , $logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger
-      , repo = OptionValue["Destination"]
+      , logger          = OptionValue["Logger"] /. Automatic -> $DefaultLogger
+      , pacletFileName  = FileNameTake @ url
       }
 
     , temp = FileNameJoin[{$TemporaryDirectory, CreateUUID[] <> ".paclet"}]
 
          (*TODO: check existence up front*)
     ;  Catch[
-           $logger @ StringTemplate[MPMInstall::dload] @ FileNameTake[url]
+           logger @ StringTemplate[MPMInstall::dload] @ pacletFileName
 
          ; URLSave[url, temp]
 
          ; If[
                FileExistsQ @ temp
-             , $logger @ StringTemplate[MPMInstall::inst] @ FileNameTake[url]
-             ; PacletInstall[ temp, piOps] // WithPacletRepository[repo]
-
+             , MPMInstall[ temp, patt, "PacletFileName" -> pacletFileName ]
              , Throw @ $Failed
            ]
        ]
 
+
+  ];
+
+
+    (*the final step*)
+  MPMInstall[
+
+      pacletPath_String ? FileExistsQ /; StringEndsQ[pacletPath, ".paclet"]
+    , patt : OptionsPattern[{MPMInstall, PacletInstall, "PacletFileName" -> Automatic}]
+
+  ]:= Module[
+
+      { $logger     = OptionValue["Logger"] /. Automatic -> $DefaultLogger
+      , repo        = OptionValue["Destination"]
+      , options     = FilterRules[{patt}, Options[PacletInstall]]
+      , pacletName  = OptionValue["PacletFileName"] /. Automatic -> FileNameTake @ pacletPath
+      }
+
+    , $logger @ StringTemplate[MPMInstall::inst] @ pacletName
+
+    ; WithPacletRepository[repo] @ PacletInstall[pacletPath, options]
 
   ];
 
@@ -184,9 +203,10 @@ Begin["`Private`"];
         ]
 
         ; If[
-            Length @ downloads > 1
-          , MPMInstall[#, patt]& /@ downloads
+            Length @ downloads == 1
           , MPMInstall[First @ downloads, patt]
+          , MPMInstall[#, patt]& /@ downloads
+
         ]
     ]
   ];
