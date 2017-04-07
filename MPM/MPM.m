@@ -6,6 +6,7 @@ BeginPackage["MPM`"];
 
   MPMInstall;
 
+  WithPacletRepository;
 
 Begin["`Private`"];
 
@@ -27,7 +28,7 @@ Begin["`Private`"];
 MPMInstall // Options = {
         "Method" -> Automatic
       , "Logger" -> Automatic
-      (*, "Destination" -> Automatic*)
+      , "Destination" -> Automatic
   };
 
   MPMInstall::noass = "Couldn't find assets for: ``/``";
@@ -65,6 +66,7 @@ MPMInstall // Options = {
       { temp
       , piOps = FilterRules[{patt}, Options[PacletInstall]]
       , $logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger
+      , repo = OptionValue["Destination"]
       }
 
     , temp = FileNameJoin[{$TemporaryDirectory, CreateUUID[] <> ".paclet"}]
@@ -78,7 +80,7 @@ MPMInstall // Options = {
          ; If[
                FileExistsQ @ temp
              , $logger @ StringTemplate[MPMInstall::inst] @ FileNameTake[url]
-             ; PacletInstall[ temp, piOps]
+             ; PacletInstall[ temp, piOps] // WithPacletRepository[repo]
 
              , Throw @ $Failed
            ]
@@ -87,8 +89,20 @@ MPMInstall // Options = {
 
   ];
 
+  WithPacletRepository::usage = "WithPacletRepository[dir][proc] creates environment for proc such that"<>
+      " the PacletManager assumes dir to be user paclets' repository directory. "<>
+      "The main purpose is to use with PacletInstall so that the paclet is installet e.g. in out dependencies folder.";
 
-  WithPacletRepository[]
+  WithPacletRepository[dir_String?DirectoryQ] := Function[
+      expr
+    , Block[{ PacletManager`Package`$userRepositoryDir = dir }
+        , expr
+      ]
+    , HoldFirst
+  ];
+
+  WithPacletRepository[Automatic] = Identity;
+
 
   GitHubAssetInstall::usage = "
           GitHubAssetInstall[author, pacletName] installs paclet distributed via GitHub repository release
