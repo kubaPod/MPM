@@ -27,18 +27,20 @@ Begin["`Private`"];
 
 
   MPMInstall // Options = {
-        "Method" -> Automatic
-      , "Logger" -> Automatic
-      , "Destination" -> Automatic
+        "Method"              -> Automatic
+      , "Logger"              -> Automatic
+      , "Destination"         -> Automatic
+      , "ConfirmRequirements" -> True
   };
 
-  MPMInstall::noass = "Couldn't find assets for: ``/``";
-  MPMInstall::invmeth = "Unknown method ``";
+  MPMInstall::noass       = "Couldn't find assets for: ``/``";
+  MPMInstall::invmeth     = "Unknown method ``";
+  MPMInstall::insreq      = "Paclet `1`-`2` was installed but can't be foud. Check requirements:\n`3`";
 
 
   MPMInstall::assetsearch = "Searching for assets `1`/`2`/`3`";
-  MPMInstall::dload = "Downloading ``...";
-  MPMInstall::inst = "Installing ``...";
+  MPMInstall::dload       = "Downloading ``...";
+  MPMInstall::inst        = "Installing ``...";
 
 
 
@@ -100,14 +102,56 @@ Begin["`Private`"];
       , repo        = OptionValue["Destination"]
       , options     = FilterRules[{patt}, Options[PacletInstall]]
       , pacletName  = OptionValue["PacletFileName"] /. Automatic -> FileNameTake @ pacletPath
+      , confirm     = OptionValue["ConfirmRequirements"]
+      , paclet
       }
 
     , $logger @ StringTemplate[MPMInstall::inst] @ pacletName
 
-    ; WithPacletRepository[repo] @ PacletInstall[pacletPath, options]
+    ; Catch[
+          paclet = WithPacletRepository[repo] @ PacletInstall[pacletPath, options]
+
+        ; Which[
+              FailureQ @ paclet , Throw @ paclet
+            , Not @ confirm, Throw @ paclet
+          ]
+
+        ; repo =   (repo /. {
+              Automatic -> All
+            , dir_String?DirectoryQ :> PacletRepository[dir]
+          })
+
+        ; found = PacletFind[
+              paclet @ "Name"
+            , "Location" -> repo
+          ]
+
+        ; If[
+              Not @ MemberQ[found, paclet]
+            , Message[MPMInstall::insreq, insReqArguments @ paclet]
+          ]
+
+        ; paclet
+
+
+
+      ]
 
   ];
 
+    insReqArguments[ paclet_ ]:= Sequence[
+        paclet @ "Name"
+      , paclet @  "Version"
+      , paclet // requirementsString
+    ];
+
+    requirementsString = ExportString[
+      List @@@ Normal @ KeyTake[
+          {"Qualifier", "WolframVersion", "SystemID", "MathematicaVersion"}
+      ] @ PacletInformation[#]
+      ,
+      "Table"
+    ]&;
 
 
 

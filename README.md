@@ -1,14 +1,18 @@
 # MPM 
 
-Package supporting advanced installation / management of paclets in Wolfram Mathematica.
+Built on top of PacletManager`. 
 
-We are just starting so the functionality is limited and bugs are hiding behind corners. So feedback appreciated!
+Community needs more tools for paclet management and the fastest way it it create them.
 
-Currently it allows to automatically install paclets released in .paclet form as assets of github releases.
+We are just starting so the functionality is limited and bugs are hiding behind corners. Feedback appreciated!
+
+### What's there?
+
+ - supports custom installation destination ("Destination" option) 
+ - installs paclets released in .paclet form attached to github releases. ("Method" ->Automatic)
 
 
-
-### Coming soon
+### Under development...
 
  - support for different release types 
  - better documentation
@@ -32,10 +36,23 @@ Currently it allows to automatically install paclets released in .paclet form as
             PacletInstall,
             "Destination" -> Automatic | _?DirectoryQ,
             "Logger"      -> Print
+            "ConfirmRequirements" -> True
         }]
     ]
+    
+- `"ConfirmRequirements"` informs if installed paclet meets requirements of the Paclet. 
+ 
+  Such exceptions are currently missed by ``PacletManager`Install``. 
+  
+  `Catch` for `MPMInstall::insreq`
+  
+- `"Destination"` allows to specify custom installation directory instead of default 
+ `$UserBaseDirectory / Paclets / Repository`
+   
+    
+     
 
-e.g.:
+### Examples:
 
     MPMInstall["szhorvat", "MaTeX"]
      
@@ -47,7 +64,9 @@ e.g.:
 
 ### Versioning
 
- Quite often paclets are identified with `x.y.z` tag while associated tag/release is `vx.y.z`. 
+ Good to remember that quite often paclets are identified by `x.y.z` tag while associated tag/release is `vx.y.z`.
+  
+ MPMInstall excepts version matching the source it is refering to. So for GitHub releases it will contain `v`, unless author made it plain `x.y.z`. 
  
 ### Creating compatible releases
 
