@@ -79,10 +79,10 @@ We are just starting so the functionality is limited and bugs are hiding behind 
 - done, your paclet can be installed with MPM
 
   But a potential user needs to have ``MPM` ``, the idea is 
- to have the following script included in your repository README:
+ to have an analogous script included in your repository README:
   
       Import["https://raw.githubusercontent.com/kubapod/mpm/master/install.m"]
-      MPM`MPMInstall["szhorvat", "matex"]
+      MPM`MPMInstall["kubapod", "morestyles"]
       
   ``MPM` `` is not necessary in this case but if used in one line, the name won't be parsed correctly. So just in case.
     
