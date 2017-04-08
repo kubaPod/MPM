@@ -103,12 +103,13 @@ Begin["`Private`"];
       , options     = FilterRules[{patt}, Options[PacletInstall]]
       , pacletName  = OptionValue["PacletFileName"] /. Automatic -> FileNameTake @ pacletPath
       , confirm     = OptionValue["ConfirmRequirements"]
-      , paclet
+      , paclet, found
       }
 
     , $logger @ StringTemplate[MPMInstall::inst] @ pacletName
 
     ; Catch[
+
           paclet = WithPacletRepository[repo] @ PacletInstall[pacletPath, options]
 
         ; Which[
