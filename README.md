@@ -2,14 +2,12 @@
 
 Built on top of PacletManager`. 
 
-Community needs more tools for paclet management and the fastest way it it create them.
-
 We are just starting so the functionality is limited and bugs are hiding behind corners. Feedback appreciated!
 
 ### What's there?
 
- - supports custom installation destination ("Destination" option) 
- - installs paclets released in .paclet form attached to github releases. ("Method" ->Automatic)
+ - supports custom installation destination (`"Destination"` option) 
+ - installs paclets released in .paclet form attached to github releases. (`"Method" ->Automatic`)
 
 
 ### Under development...
