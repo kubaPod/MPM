@@ -1,5 +1,18 @@
 (* ::Package:: *)
 
+System`MPM::insv = "MPM only supports Mathematica `` or later.";
+
+If[
+    $VersionNumber < #
+  , Message[System`MPM::insv, #]
+  ; Abort[]
+]&[10.4]
+
+
+(* ::Section:: *)
+(*Begin*)
+
+
 BeginPackage["MPM`"];
 
   Needs @ "PacletManager`";
@@ -10,20 +23,27 @@ BeginPackage["MPM`"];
 
 Begin["`Private`"];
 
+
+(* ::Section:: *)
+(*Content*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*misc*)
+
+
 (*TODO: check whether the paclet can be found after it is installed.
   If it is not, inform user that it probably doesn't meet requirements*)
 
   $DefaultLogger = Print;
 
 
-  $ReleaseUrlTemplate = StringTemplate[
-    "https://api.github.com/repos/`1`/`2`/releases/<* If[#3=!=\"latest\", \"tags/\", \"\"] *>`3`"
-  ];
+(* ::Subsection:: *)
+(*MPMInstall*)
 
-  $PacletAssetPattern = KeyValuePattern[
-    "browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]
-  ] :> url;
 
+(* ::Subsubsection::Closed:: *)
+(*options*)
 
 
   MPMInstall // Options = {
@@ -33,15 +53,21 @@ Begin["`Private`"];
       , "ConfirmRequirements" -> True
   };
 
+
+(* ::Subsubsection::Closed:: *)
+(*messages*)
+
+
   MPMInstall::noass       = "Couldn't find assets for: ``/``";
   MPMInstall::invmeth     = "Unknown method ``";
   MPMInstall::insreq      = "Paclet `1`-`2` was installed but can't be foud. Check requirements:\n`3`";
-
-
   MPMInstall::assetsearch = "Searching for assets `1`/`2`/`3`";
   MPMInstall::dload       = "Downloading ``...";
   MPMInstall::inst        = "Installing ``...";
 
+
+(* ::Subsubsection:: *)
+(*Install method switch*)
 
 
   MPMInstall[
@@ -59,6 +85,11 @@ Begin["`Private`"];
       ]
 
   ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Install from url*)
+
 
     (*TODO: once PacletInstall supports https it will probably go*)
   MPMInstall[
@@ -88,6 +119,10 @@ Begin["`Private`"];
 
 
   ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Install from file*)
 
 
     (*the final step*)
@@ -157,15 +192,24 @@ Begin["`Private`"];
 
 
 
+(* ::Subsection:: *)
+(*Paclets Utilities*)
+
+
+(* ::Subsubsection:: *)
+(*WithPacletRepository*)
+
+
     (*Haven't found a trace of any option designed for this so we are using this helper function
       to install paclet is desired directory.
       One should expect that the option IgnoreVersion -> True should be added too in order to
       ignore available paclets during installation/copying a specific paclet to e.g. dependencies
     *)
 
-  WithPacletRepository::usage = "WithPacletRepository[dir][proc] creates environment for proc such that"<>
-      " the PacletManager assumes dir to be user paclets' repository directory. "<>
-      "The main purpose is to use with PacletInstall so that the paclet is installet e.g. in out dependencies folder.";
+  WithPacletRepository::usage = "WithPacletRepository[dir][proc] creates environment for proc such that "<>
+      "the PacletManager assumes dir to be user paclets' repository directory. "<>
+      "The main purpose is to use with PacletInstall so that the paclet is installed "<>
+      "e.g. in dependencies folder of another project.";
 
   WithPacletRepository[dir_String?DirectoryQ] := Function[
       expr
@@ -179,6 +223,10 @@ Begin["`Private`"];
 
 
 
+
+
+(* ::Subsubsection::Closed:: *)
+(*PacletRepository*)
 
 
     (*In future we need to know whether desired paclets are in a specific directory regardless
@@ -198,6 +246,14 @@ Begin["`Private`"];
     pacletDir, dir ~~ __
   ];
 
+
+
+(* ::Subsection:: *)
+(*Specific installations*)
+
+
+(* ::Subsubsection:: *)
+(*GitHubAssetInstall*)
 
 
   GitHubAssetInstall::usage = "
@@ -259,6 +315,16 @@ Begin["`Private`"];
 
 
 
+  $ReleaseUrlTemplate = StringTemplate[
+    "https://api.github.com/repos/`1`/`2`/releases/<* If[#3=!=\"latest\", \"tags/\", \"\"] *>`3`"
+  ];
+
+  $PacletAssetPattern = KeyValuePattern[
+    "browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]
+  ] :> url;
+
+
+
 (*      ; target = FileNameJoin[{CreateDirectory[], "paclet.paclet"}]
    ; If[
             $Notebooks
@@ -271,6 +337,10 @@ Begin["`Private`"];
     ]
   ; If[FileExistsQ[target], PacletInstall[target], $Failed]
 ]*)
+
+
+(* ::Section:: *)
+(*End*)
 
 
 End[];
