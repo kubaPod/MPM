@@ -8,12 +8,21 @@
 
 
 
-  Module[{newestRelease, localPaclet, needToFetch},
+  Module[{newestRelease, localPaclet, needToFetch, releaseInfo, pacletURL, tempPath},
       Catch[
-            (*not convenient but the fastest way to know what is the latest release*)
-            (*keep this number in sync with the latest release NOT with the master branch paclet version*)
-            (*the reason is that if not up to date we will install MPM from GH release assets*)
-          newestRelease = "0.1.1";
+
+        releaseInfo = Check[
+          ImportString[
+            FromCharacterCode @ URLFetch[
+              "https://api.github.com/repos/kubaPod/mpm/releases/latest"
+            , "ContentData"
+            ]
+          , "JSON"
+          ]
+        , Throw @ $Failed
+        ]
+
+        ; newestRelease = StringTrim[Lookup[releaseInfo, "tag_name"], "v"];
 
         ; localPaclet = PacletFind @ "MPM";
 
@@ -33,8 +42,19 @@
             ; Throw @ True
           ]
 
-        ; Import @ "https://raw.githubusercontent.com/kubapod/mpm/master/MPM/MPM.m"
+        ; pacletURL = If[
+            # === {}
+          , Throw @ $Failed
+          , First @ #
+          ] &[
+            Lookup[#, "browser_download_url", {}] & /@
+              Lookup[releaseInfo, "assets", {}]
+          ]
 
-        ; MPM`MPMInstall["kubapod", "MPM"]
+        ; tempPath = FileNameJoin[{$TemporaryDirectory, CreateUUID["MPM"] <> ".paclet"}]
+
+        ; Check[ URLSave[pacletURL, tempPath], Throw @ $Failed]
+
+        ; PacletInstall @ tempPath
       ]
   ]
