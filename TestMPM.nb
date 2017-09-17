@@ -1,0 +1,109 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      3990,        101]
+NotebookOptionsPosition[      1085,         42]
+NotebookOutlinePosition[      3909,        100]
+CellTagsIndexPosition[      3866,         97]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell["\<\
+Developer notes:
+
+MPM.m MUST be clean on master!!! This is what is fetched by automatic \
+installer.\
+\>", "Text",
+ CellChangeTimes->{{3.714622768778406*^9, 3.714622816245207*^9}},
+ CellID->378985130,ExpressionUUID->"d64bae8d-7724-4dd2-b609-820accc3aa0c"],
+
+Cell["\<\
+
+TODO: 
+
+drafts
+prereleases
+credentials
+release - / latest/newest/function/manual
+filter\
+\>", "Text",
+ CellChangeTimes->{{3.714622768778406*^9, 3.7146227864486065`*^9}},
+ CellID->119321317,ExpressionUUID->"32d7a85a-758d-4b32-b4a2-717d71370fdd"]
+},
+WindowSize->{775, 873},
+WindowMargins->{{475, Automatic}, {11, Automatic}},
+TaggingRules->{
+ "CREO" -> {
+   "DevMode" -> False, "TestMode" -> True, "CloudBase" -> 
+    "https://www2.wepc.creo.ac", "LaunchNavigator" -> True, "DebugMode" -> 
+    True, "User" -> 
+    Association[
+     "id" -> "adminId", "firstName" -> "Super", "lastName" -> "Admin", 
+      "email" -> "support@sylva.ac", "lastAccess" -> 
+      "2017-09-07T10:26:27.408Z", "emailVerified" -> True, "createdAt" -> 
+      "2017-02-07T16:21:03.219Z", "updatedAt" -> "2017-09-07T10:26:27.484Z", 
+      "roles" -> {"superadmin", "developer"}], "CachedCredentials" -> False, 
+    "Token" -> 
+    "kQv9HfwJ1CouAH2oEGbcJ3EsF6I2Zr2YE4Db5vOH3sfhK5nVZhSuMmac2pQ10gfk", 
+    "RecentFiles" -> {
+      Association[
+      "name" -> "ExampleAssignment", "datatype" -> "application/octet-stream",
+        "size" -> 1622, "source" -> 
+       "58773c3bac8f880600a82d38/creo-assignmentTemplate/1504710314/\
+ExampleAssignment", "status" -> 0, "projectId" -> "58773c3bac8f880600a82d38", 
+       "componentModel" -> "creo-assignmentTemplate", "parsed" -> Null, 
+       "data" -> Null, "container" -> "projects", "createdAt" -> 
+       "2017-06-25T09:42:05.509Z", "updatedAt" -> "2017-09-06T15:05:14.342Z", 
+       "id" -> "594f856d89b0fb0b00e3e767"], 
+      Association[
+      "name" -> "TestDeployment.nb.zip", "datatype" -> 
+       "application/octet-stream", "size" -> 63101, "source" -> 
+       "58773c3bac8f880600a82d38/creo-courseware/1504785297/TestDeployment.nb.\
+zip", "status" -> 0, "projectId" -> "58773c3bac8f880600a82d38", 
+       "componentModel" -> "creo-courseware", "parsed" -> Null, "data" -> 
+       Null, "container" -> "projects", "createdAt" -> 
+       "2017-01-12T09:39:20.954Z", "updatedAt" -> "2017-09-07T11:55:00.886Z", 
+       "id" -> "58774ec8272ea20600b4f5b0", "filename" -> Null], 
+      Association[
+      "name" -> "a_very_long_file_name_will_hopefully_not_break_creo.nb.zip", 
+       "datatype" -> "application/octet-stream", "size" -> 1991, "source" -> 
+       "58773c3bac8f880600a82d38/creo-courseware/1504007305___a_very_long_\
+file_name_will_hopefully_not_break_creo.nb.zip", "status" -> 0, "projectId" -> 
+       "58773c3bac8f880600a82d38", "componentModel" -> "creo-courseware", 
+       "parsed" -> Null, "data" -> Null, "container" -> "projects", 
+       "createdAt" -> "2017-08-29T11:48:23.393Z", "updatedAt" -> 
+       "2017-08-29T11:48:25.204Z", "id" -> "59a55487ccb47e06003da150"]}}, 
+  "$testsRun" -> False},
+FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (July 29, 2017)",
+StyleDefinitions->FrontEnd`FileName[{"MUnit"}, "MUnit.nb", CharacterEncoding -> 
+  "UTF-8"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 265, 7, 68, "Text",ExpressionUUID->"d64bae8d-7724-4dd2-b609-820accc3aa0c",
+ CellID->378985130],
+Cell[826, 29, 255, 11, 166, "Text",ExpressionUUID->"32d7a85a-758d-4b32-b4a2-717d71370fdd",
+ CellID->119321317]
+}
+]
+*)
+

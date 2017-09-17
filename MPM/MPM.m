@@ -29,7 +29,7 @@ Begin["`Private`"];
 
 
 (* ::Subsubsection::Closed:: *)
-(*misc*)
+(*settings*)
 
 
 (*TODO: check whether the paclet can be found after it is installed.
@@ -38,19 +38,60 @@ Begin["`Private`"];
   $DefaultLogger = Print;
 
 
+(* ::Subsubsection:: *)
+(*utilities*)
+
+
+
+   (* https://mathematica.stackexchange.com/a/55746/5478 *)
+toAssociation = Replace[#,a:{__Rule}:>Association[a],{0,\[Infinity]}]&;
+
+   (* https://mathematica.stackexchange.com/q/154245/5478 *)
+bytesToAssociation[bytes:{__Integer}]:= toAssociation @ ImportString[FromCharacterCode[bytes], "JSON"]
+bytesToAssociation[___]=$Failed;
+
+
+MPMInstall::fetchIssue = "Call to `` returned `` \n\n\t ``";
+MPMInstall::fetchFailed = "Call to `` failed."
+urlExecute[p_, r___]:= Module[{response}
+, response = URLFetch[p, {"StatusCode", "ContentData"}]
+
+; Switch[ 
+      response
+    , {200, {__Integer}}
+    , bytestToAssociation @ Last @ response
+    
+    , {_Integer, {__Integer}}
+    , Message[MPMInstall::fetchIssue, p, response[[1]], FromCharacterCode @ response[[2]]]
+    ; $Failed
+    
+    , _
+    , Message[MPMInstall::fetchFailed, p]
+    ; $Failed
+  ]
+];
+  (*fetch stuff and return association assuming it is json*)
+
+
 (* ::Subsection:: *)
 (*MPMInstall*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*options*)
 
 
+  (*not all options will be relevant for all repositories*)
+  
   MPMInstall // Options = {
-        "Method"              -> Automatic
+        "Source"              -> Automatic
       , "Logger"              -> Automatic
       , "Destination"         -> Automatic
       , "ConfirmRequirements" -> True
+      , "AllowDrafts"         -> False (*whether to honor draft releases*)
+      , "AllowPrereleases"    -> False (*whether to honor prereleases*)
+      , "Credentials"         -> {} (*_String is considered a token, {_, _} is considered username/pw*)
+      , "Release"             -> "latest"
   };
 
 
@@ -59,29 +100,29 @@ Begin["`Private`"];
 
 
   MPMInstall::noass       = "Couldn't find assets for: ``/``";
-  MPMInstall::invmeth     = "Unknown method ``";
+  MPMInstall::invst     = "Unknown source type: ``";
   MPMInstall::insreq      = "Paclet `1`-`2` was installed but can't be foud. Check requirements:\n`3`";
   MPMInstall::assetsearch = "Searching for assets `1`/`2`/`3`";
   MPMInstall::dload       = "Downloading ``...";
   MPMInstall::inst        = "Installing ``...";
 
 
-(* ::Subsubsection:: *)
-(*Install method switch*)
+(* ::Subsubsection::Closed:: *)
+(*Install source switch*)
 
 
   MPMInstall[
       args__
     , patt : OptionsPattern[{MPMInstall, PacletInstall}]
 
-  ]:= Module[ { method = OptionValue["Method"] }
+  ]:= Module[ { type = OptionValue["Source"] }
 
-    , Switch[ method
+    , Switch[ type
         , Automatic | "gh-assets-paclet"
         , GitHubAssetInstall[args, patt]
 
         , _
-        , Message[MPMInstall::invmeth, method]; $Failed
+        , Message[MPMInstall::invst, type]; $Failed
       ]
 
   ];
@@ -196,7 +237,7 @@ Begin["`Private`"];
 (*Paclets Utilities*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*WithPacletRepository*)
 
 
@@ -233,7 +274,7 @@ Begin["`Private`"];
       whether they are in others. PacletFind "Location" checks only for the paclet directory
       and can't understand paclet parent directory. It also checks with SameQ :( this wrapper should help
 
-    So if you have MyPaclet installed in paclets/repository/folder you can confimr that with:
+    So if you have e.g. MyPaclet installed in paclets/repository/folder you can confimr that with:
 
     PacletFind["MyPaclet", "Location" -> PacletRepository["paclets/repository/folder"]]
 
@@ -256,10 +297,11 @@ Begin["`Private`"];
 (*GitHubAssetInstall*)
 
 
-  GitHubAssetInstall::usage = "
-          GitHubAssetInstall[author, pacletName] installs paclet distributed via GitHub repository release
+(* ::Subsubsubsection:: *)
+(*GitHubAssetInstall*)
 
-      ";
+
+  GitHubAssetInstall::usage = "GitHubAssetInstall[author, pacletName] installs paclet distributed via GitHub repository release";
 
   GitHubAssetInstall // Options = Options @ MPMInstall;
 
@@ -268,6 +310,8 @@ Begin["`Private`"];
   (*TODO: consider adding 'Force' option that will force overwriting instead of asking user*)
   (*TODO: add conditional progress indicator, based on $Notebooks and $logger wrapper*)
 
+
+
   GitHubAssetInstall[
       author_String
     , paclet_String
@@ -275,7 +319,7 @@ Begin["`Private`"];
     , patt : OptionsPattern[{GitHubAssetInstall, PacletInstall}]
 
   ]:=Module[
-      { json
+      { json, spec
       , downloads
       , pacletInstall
       , $logger = OptionValue["Logger"] /. Automatic -> $DefaultLogger
@@ -285,22 +329,35 @@ Begin["`Private`"];
 
           $logger @ StringTemplate[MPMInstall::assetsearch][  author, paclet, version ]
 
-        ; json = Import[
-          $ReleaseUrlTemplate[author, paclet, version]
-          , "RawJSON"
-        ]
-
-
-        ; downloads = If[
-          Not @ MatchQ[
-            json
-            , KeyValuePattern["assets" -> _List ? (MemberQ[First @ $PacletAssetPattern])]
+        ; spec = <|
+            "paclet" -> paclet
+          , "author" -> author
+          , "version" -> version
+          , Options @ GitHubAssetInstall
+          , "logger" -> $logger
+          , patt
+          |>
+          
+        ; downloads = If[ withDrafts || withPre
+            , assetsPacletsFind @ spec
+            , assetsPacletsFindBasic @ spec
+          ]
+   
+        ; json = bytesToAssociation @ URLFetch[
+            $ReleaseUrlTemplate[author, paclet, version]
+          , "ContentData"
+          ]
+              
+        ; downloads = Select[
+            json[["assets", All, "browser_download_url"]]
+          , StringMatchQ[#, __~~".paclet"]&
           ]
 
+        ; If[
+            Length @ downloads
           , Message[MPMInstall::noass, paclet, version]
           ; Throw @ $Failed
-
-          , Cases[json["assets"], $PacletAssetPattern ]
+       
         ]
 
         ; If[
@@ -315,14 +372,31 @@ Begin["`Private`"];
 
 
 
+(* ::Subsubsubsection:: *)
+(*fetch latest links*)
+
+
+assetsPacletsFindBasic[spec_Association]:= Module[{}
+, Catch[
+
+  ]
+];
+
+assetsPacletsFindBasic[___]=$Failed;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*misc*)
+
+
   $ReleaseUrlTemplate = StringTemplate[
     "https://api.github.com/repos/`1`/`2`/releases/<* If[#3=!=\"latest\", \"tags/\", \"\"] *>`3`"
   ];
-
+(*
   $PacletAssetPattern = KeyValuePattern[
     "browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]
   ] :> url;
-
+*)
 
 
 (*      ; target = FileNameJoin[{CreateDirectory[], "paclet.paclet"}]
