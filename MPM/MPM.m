@@ -8,6 +8,9 @@ If[
   ; Abort[]
 ]&[10.4]
 
+ClearAll["MPM`*"];
+ClearAll["MPM`*`*"];
+
 
 (* ::Section:: *)
 (*Begin*)
@@ -34,35 +37,44 @@ Begin["`Private`"];
 
 (*TODO: check whether the paclet can be found after it is installed.
   If it is not, inform user that it probably doesn't meet requirements*)
-
+  
   $DefaultLogger = Print;
+  dPrint = If[TrueQ @ $debug, (Print["debug: ",#];#)&, #&]
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*utilities*)
 
 
-
+   (* RawJSON is not available V10 *)
    (* https://mathematica.stackexchange.com/a/55746/5478 *)
 toAssociation = Replace[#,a:{__Rule}:>Association[a],{0,\[Infinity]}]&;
 
+   (* robust url fetch with respect to encoding *)
    (* https://mathematica.stackexchange.com/q/154245/5478 *)
 bytesToAssociation[bytes:{__Integer}]:= toAssociation @ ImportString[FromCharacterCode[bytes], "JSON"]
 bytesToAssociation[___]=$Failed;
 
 
-MPMInstall::fetchIssue = "Call to `` returned `` \n\n\t ``";
-MPMInstall::fetchFailed = "Call to `` failed."
+   (*URLFetch RawJSON utility*)
+
+
+
 urlExecute[p_, r___]:= Module[{response}
-, response = URLFetch[p, {"StatusCode", "ContentData"}]
+, response = URLFetch[p, {"StatusCode", "ContentData"}, r]
 
 ; Switch[ 
       response
     , {200, {__Integer}}
-    , bytestToAssociation @ Last @ response
+    , bytesToAssociation @ Last @ response
     
     , {_Integer, {__Integer}}
-    , Message[MPMInstall::fetchIssue, p, response[[1]], FromCharacterCode @ response[[2]]]
+    , Message[
+        MPMInstall::fetchIssue
+      , p
+      , First @ response
+      , FromCharacterCode @ Last @ response
+      ]
     ; $Failed
     
     , _
@@ -70,7 +82,7 @@ urlExecute[p_, r___]:= Module[{response}
     ; $Failed
   ]
 ];
-  (*fetch stuff and return association assuming it is json*)
+ 
 
 
 (* ::Subsection:: *)
@@ -84,45 +96,50 @@ urlExecute[p_, r___]:= Module[{response}
   (*not all options will be relevant for all repositories*)
   
   MPMInstall // Options = {
-        "Source"              -> Automatic
+        "Method"              -> Automatic
       , "Logger"              -> Automatic
       , "Destination"         -> Automatic
       , "ConfirmRequirements" -> True
-      , "AllowDrafts"         -> False (*whether to honor draft releases*)
+      (*, "AllowDrafts"         \[Rule] False (*whether to honor draft releases*)*)
       , "AllowPrereleases"    -> False (*whether to honor prereleases*)
-      , "Credentials"         -> {} (*_String is considered a token, {_, _} is considered username/pw*)
-      , "Release"             -> "latest"
+      (*, "Credentials"         \[Rule] {} (*_String is considered a token, {_, _} is considered username/pw*)*)
+      (*, "Version"             \[Rule] "latest"*)
   };
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*messages*)
 
 
-  MPMInstall::noass       = "Couldn't find assets for: ``/``";
-  MPMInstall::invst     = "Unknown source type: ``";
-  MPMInstall::insreq      = "Paclet `1`-`2` was installed but can't be foud. Check requirements:\n`3`";
+  MPMInstall::fetchIssue = "URL call to `` returned `` \n\n\t ``";
+  MPMInstall::fetchFailed = "URL call to `` failed.";
+  
+  
+  MPMInstall::noass      = "``/`` release assets don't contain .paclet files.";
+  MPMInstall::invmth     = "Unknown method: ``";
+  MPMInstall::insreq      = "Paclet `1`-`2` was installed but can't be foud. Please review requirements:\n`3`";
   MPMInstall::assetsearch = "Searching for assets `1`/`2`/`3`";
   MPMInstall::dload       = "Downloading ``...";
   MPMInstall::inst        = "Installing ``...";
+  MPMInstall::invRspec    = "Invalid release specification: ``.";
 
 
 (* ::Subsubsection::Closed:: *)
-(*Install source switch*)
+(*Install method switch*)
 
 
   MPMInstall[
       args__
     , patt : OptionsPattern[{MPMInstall, PacletInstall}]
 
-  ]:= Module[ { type = OptionValue["Source"] }
+  ]:= Module[ { type = OptionValue["Method"] }
 
     , Switch[ type
         , Automatic | "gh-assets-paclet"
         , GitHubAssetInstall[args, patt]
 
         , _
-        , Message[MPMInstall::invst, type]; $Failed
+        , Message[MPMInstall::invmth, type]; $Failed
       ]
 
   ];
@@ -162,7 +179,7 @@ urlExecute[p_, r___]:= Module[{response}
   ];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Install from file*)
 
 
@@ -184,24 +201,18 @@ urlExecute[p_, r___]:= Module[{response}
 
     , $logger @ StringTemplate[MPMInstall::inst] @ pacletName
 
-    ; Catch[
+    ; WithPacletRepository[repo] @ Catch[
 
-          paclet = WithPacletRepository[repo] @ PacletInstall[pacletPath, options]
-
+          paclet = PacletInstall[pacletPath, options]
+          
         ; Which[
               FailureQ @ paclet , Throw @ paclet
+       (*     , $VersionNumber \[GreaterEqual] 11.2, Throw @ paclet  (*2*)*)
             , Not @ confirm, Throw @ paclet
           ]
-
-        ; repo =   (repo /. {
-              Automatic -> All
-            , dir_String?DirectoryQ :> PacletRepository[dir]
-          })
-
-        ; found = PacletFind[
-              paclet @ "Name"
-            , "Location" -> repo
-          ]
+          
+          (*otherwise let's check if paclet is compatible manually*)
+        ; found = PacletFind[paclet @ "Name"]
 
         ; If[
               Not @ MemberQ[found, paclet]
@@ -215,6 +226,19 @@ urlExecute[p_, r___]:= Module[{response}
       ]
 
   ];
+
+(*2 - since 11.2 PacletInstall will message about not compatible paclet.
+   I did this test manually and there is MPMInstall::insreq message but then
+   the build in one will be added. MPM's should stay because it is consistent
+   with pre v11.2, natural choice is to surpress PacletInstall::compat to have
+   uniform messages outcome too. I won't do that because someone may expect this 
+   message and incorporating MPM to existing code will break it*)
+
+(*1 - for custom destination we need to rebuild paclet data because otherwise 
+  paclets from standard repositories may interfere and prompt samevers errors etc,
+  moreover user can't use IgnoreVersion as he/she may not want to ignore version 
+  with respect to custom destination
+ *)
 
     insReqArguments[ paclet_ ]:= Sequence[
         paclet @ "Name"
@@ -237,12 +261,12 @@ urlExecute[p_, r___]:= Module[{response}
 (*Paclets Utilities*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*WithPacletRepository*)
 
 
     (*Haven't found a trace of any option designed for this so we are using this helper function
-      to install paclet is desired directory.
+      to install paclet in a desired directory.
       One should expect that the option IgnoreVersion -> True should be added too in order to
       ignore available paclets during installation/copying a specific paclet to e.g. dependencies
     *)
@@ -254,8 +278,13 @@ urlExecute[p_, r___]:= Module[{response}
 
   WithPacletRepository[dir_String?DirectoryQ] := Function[
       expr
-    , Block[{ PacletManager`Package`$userRepositoryDir = dir }
-        , expr
+    , Module[{result}
+      , Block[{ PacletManager`Package`$userRepositoryDir = dir}
+        , RebuildPacletData[]
+        ; result = expr
+        ]
+      ; RebuildPacletData[]  
+      ; result
       ]
     , HoldFirst
   ];
@@ -330,40 +359,38 @@ urlExecute[p_, r___]:= Module[{response}
           $logger @ StringTemplate[MPMInstall::assetsearch][  author, paclet, version ]
 
         ; spec = <|
-            "paclet" -> paclet
-          , "author" -> author
-          , "version" -> version
+            "paclet" -> paclet, "author" -> author, "version" -> version
           , Options @ GitHubAssetInstall
           , "logger" -> $logger
           , patt
           |>
           
-        ; downloads = If[ withDrafts || withPre
+        ; dPrint @ spec  
+        
+        ; downloads = If[ 
+              TrueQ[ Or[
+                Lookup[spec, "AllowPrereleases", False]
+              (*, Lookup[spec, {"AllowDrafts", "AllowPrereleases"}, False]*)
+              , Not @ StringQ @ spec @ "version"  
+              ]]
             , assetsPacletsFind @ spec
             , assetsPacletsFindBasic @ spec
           ]
-   
-        ; json = bytesToAssociation @ URLFetch[
-            $ReleaseUrlTemplate[author, paclet, version]
-          , "ContentData"
-          ]
-              
-        ; downloads = Select[
-            json[["assets", All, "browser_download_url"]]
-          , StringMatchQ[#, __~~".paclet"]&
-          ]
 
-        ; If[
-            Length @ downloads
+        ; Switch[
+            downloads
+          , {}  
           , Message[MPMInstall::noass, paclet, version]
           ; Throw @ $Failed
-       
-        ]
-
-        ; If[
-            Length @ downloads == 1
+          
+          , {_String}       
           , MPMInstall[First @ downloads, patt]
+          
+          , {__String}
           , MPMInstall[#, patt]& /@ downloads
+          
+          , _ (*TODO: something more verbose*)
+          , $Failed
 
         ]
     ]
@@ -376,27 +403,77 @@ urlExecute[p_, r___]:= Module[{response}
 (*fetch latest links*)
 
 
-assetsPacletsFindBasic[spec_Association]:= Module[{}
-, Catch[
-
+assetsPacletsFindBasic[spec_Association]:= Module[{json}
+, dPrint["basic assets search"]
+; Catch[
+    json = urlExecute @ $SpecificReleaseUrlTemplate @ spec
+              
+  ; releaseAssetPacletUrlCases @ json
   ]
 ];
 
 assetsPacletsFindBasic[___]=$Failed;
 
 
-(* ::Subsubsubsection::Closed:: *)
+(*currently this is used when allow prereleases is asked so no filter related to that will be create,
+in future this will be only on of requirements for filtering/sorting so should be taken into account.
+
+Not sure about final approach but it will be two step, createing filtering function based on options proviaded
+and then creating sorting/extracting function based on options.
+
+ Which when composed should return release association we can parse later *)
+
+assetsPacletsFind[spec_Association]:=Module[{releases, picker, release}
+
+ , dPrint["full assets search"]
+ ; Catch[
+        releases = urlExecute @ $ReleaseUrlTemplate @ spec
+        
+      ; If[Not @ MatchQ[releases, {__Association}]
+        , Message[MPMInstall::noass, spec@"author", spec @ "paclet"]
+        ; Throw @ $Failed
+        ]
+        (*let's assume picker should always return list of one release*)
+      ; picker = Switch[ spec["version"]  
+        , "latest"
+        , SortBy[-AbsoluteTime[#"created_at"]& ][[{1}]]
+        
+        , _String
+        , Select[#"tag_name"===spec["version"]&]
+        
+        , _
+        , Message[MPMInstall::invRspec, spec["version"]]
+        ; Throw @{}
+        ]
+        
+      ; release = First @ picker @ releases  
+      ; releaseAssetPacletUrlCases @ release
+    ]
+];
+
+
+assetsPacletsFind[___] = $Failed;
+
+
+(* ::Subsubsubsection:: *)
 (*misc*)
 
 
-  $ReleaseUrlTemplate = StringTemplate[
-    "https://api.github.com/repos/`1`/`2`/releases/<* If[#3=!=\"latest\", \"tags/\", \"\"] *>`3`"
+  $GitHubReleaseURL = "https://api.github.com/repos/`author`/`paclet`/releases";
+  $ReleaseUrlTemplate = StringTemplate @ $GitHubReleaseURL;
+  
+  $SpecificReleaseUrlTemplate = StringTemplate @StringJoin[
+    $GitHubReleaseURL, "/", "<* If[#version =!= \"latest\", \"tags/\", \"\"] *>`version`"
   ];
-(*
-  $PacletAssetPattern = KeyValuePattern[
-    "browser_download_url" -> url_String /; StringEndsQ[url, ".paclet"]
-  ] :> url;
-*)
+
+
+releaseAssetPacletUrlCases[release_Association]:=Check[
+        Select[
+          release[["assets", All, "browser_download_url"]]
+        , StringMatchQ[#, __~~".paclet"]&
+        ]
+      , {}
+     ];
 
 
 (*      ; target = FileNameJoin[{CreateDirectory[], "paclet.paclet"}]
