@@ -26,26 +26,51 @@ We are just starting so the functionality is limited and bugs are hiding behind 
 
 ### Usage
 
-    MPMInstall[
+- general method
+    
+      MPMInstall[
         author     : _String
       , pacletName : _String
-      , version    : _String : "latest"
-      , OptionsPattern[{
-            PacletInstall,
-            "Destination" -> Automatic | _?DirectoryQ,
-            "Logger"      -> Print
-            "ConfirmRequirements" -> True
-        }]
-    ]
+      , version    : _String : "latest"  
+      , OptionsPattern[]    
+      ]
+      
+- from url
     
-- `"ConfirmRequirements"` informs if installed paclet meets requirements of the Paclet. 
- 
-  Such exceptions are currently missed by ``PacletManager`Install``. 
-  
-  `Catch` for `MPMInstall::insreq`
-  
+      MPMInstall[
+        url : _String /; StringMatchQ[url, "http"|"ftp"~~__~~".paclet"]
+      , OptionsPattern[]      
+      ]      
+
+- from file
+    
+       MPMInstall[
+        path : _String ? FileExistsQ /; StringEndsQ[pacletPath, ".paclet"]
+      , OptionsPattern[]      
+      ]      
+    
+### Options    
+    
+`MPMInstall` takes all `Options[PacletInstall]` and passes them to `PacletInstall` at the end.
+
+Additionally:
+
 - `"Destination"` allows to specify custom installation directory instead of default 
  `$UserBaseDirectory / Paclets / Repository`
+
+- `"ConfirmRequirements"` informs if an installed paclet meets requirements of the Paclet. 
+ 
+  Such exceptions are missed by ``PacletManager`Install`` before MMA V11.2. 
+  
+  `Catch` for `MPMInstall::insreq`
+
+- `"Logger"` by default `Print` informs about the state of installation.
+
+- `"AllowPrereleases"` by default `False` specifies whether pre-releases should be taken into account.
+               
+    
+  
+
    
     
      
