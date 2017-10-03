@@ -31,7 +31,7 @@ Begin["`Private`"];
 (*Content*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*settings*)
 
 
@@ -39,10 +39,10 @@ Begin["`Private`"];
   If it is not, inform user that it probably doesn't meet requirements*)
   
   $DefaultLogger = Print;
-  dPrint = If[TrueQ @ $debug, (Print["debug: ",#];#)&, #&]
+  dPrint = If[TrueQ @ System`Private`$mpmDebug, (Print["debug: ",#];#)&, #&]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*utilities*)
 
 
@@ -58,7 +58,7 @@ bytesToAssociation[___]=$Failed;
 
    (*URLFetch RawJSON utility*)
 
-
+(*TODO: add content-encoding resolving for pre V11.*)
 
 urlExecute[p_, r___]:= Module[{response}
 , response = URLFetch[p, {"StatusCode", "ContentData"}, r]
@@ -67,6 +67,9 @@ urlExecute[p_, r___]:= Module[{response}
       response
     , {200, {__Integer}}
     , bytesToAssociation @ Last @ response
+    
+    , {404, {__Integer}}
+    , 404
     
     , {_Integer, {__Integer}}
     , Message[
@@ -89,7 +92,7 @@ urlExecute[p_, r___]:= Module[{response}
 (*MPMInstall*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*options*)
 
 
@@ -112,19 +115,32 @@ urlExecute[p_, r___]:= Module[{response}
 
 
   MPMInstall::fetchIssue = "URL call to `` returned `` \n\n\t ``";
-  MPMInstall::fetchFailed = "URL call to `` failed.";
+  MPMInstall::fetchFailed = "URL call to `` failed.";  
   
-  
-  MPMInstall::noass      = "``/`` release assets don't contain .paclet files.";
+  MPMInstall::noass      = "There are no release .paclet files for ``/``";
   MPMInstall::invmth     = "Unknown method: ``";
   MPMInstall::insreq      = "Paclet `1`-`2` was installed but can't be foud. Please review requirements:\n`3`";
+ 
+  
+  MPMInstall::noResults   = "Failed to find any release matching those criteria.";
+  MPMInstall::invRepo     = "Failed to find ``/`` respository, make sure author and project name are correct.";
+  MPMInstall::invRelease  = "Release ``/``/`` does not exist.";
+  MPMInstall::invReleaseSpec    = "Invalid release specification: ``.";
+
+
+(* ::Subsubsection:: *)
+(*strings*)
+
+
+(*defined as messages but will be used with StringTemplate*)
+
+
   MPMInstall::assetsearch = "Searching for assets `1`/`2`/`3`";
   MPMInstall::dload       = "Downloading ``...";
   MPMInstall::inst        = "Installing ``...";
-  MPMInstall::invRspec    = "Invalid release specification: ``.";
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Install method switch*)
 
 
@@ -179,7 +195,7 @@ urlExecute[p_, r___]:= Module[{response}
   ];
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Install from file*)
 
 
@@ -257,11 +273,11 @@ urlExecute[p_, r___]:= Module[{response}
 
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Paclets Utilities*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*WithPacletRepository*)
 
 
@@ -407,7 +423,11 @@ assetsPacletsFindBasic[spec_Association]:= Module[{json}
 , dPrint["basic assets search"]
 ; Catch[
     json = urlExecute @ $SpecificReleaseUrlTemplate @ spec
-              
+  ; If[ 
+      json === 404
+    , Message[MPMInstall::invRelease, spec["author"], spec["paclet"], spec["version"]]
+    ; Throw @ $Failed
+    ] 
   ; releaseAssetPacletUrlCases @ json
   ]
 ];
@@ -429,10 +449,18 @@ assetsPacletsFind[spec_Association]:=Module[{releases, picker, release}
  ; Catch[
         releases = urlExecute @ $ReleaseUrlTemplate @ spec
         
-      ; If[Not @ MatchQ[releases, {__Association}]
+      ; If[ 
+          releases === 404
+        , Message[MPMInstall::invRepo, spec["author"], spec["paclet"]]
+        ; Throw @ $Failed
+        ]
+          
+      ; If[
+          Not @ MatchQ[releases, {__Association}]
         , Message[MPMInstall::noass, spec@"author", spec @ "paclet"]
         ; Throw @ $Failed
         ]
+        
         (*let's assume picker should always return list of one release*)
       ; picker = Switch[ spec["version"]  
         , "latest"
@@ -442,11 +470,17 @@ assetsPacletsFind[spec_Association]:=Module[{releases, picker, release}
         , Select[#"tag_name"===spec["version"]&]
         
         , _
-        , Message[MPMInstall::invRspec, spec["version"]]
+        , Message[MPMInstall::invReleaseSpec, spec["version"]]
         ; Throw @{}
         ]
         
-      ; release = First @ picker @ releases  
+      ; release = picker @ releases  
+      ; If[ 
+          MatchQ[release,  {__Association}]
+        , release = First @ release
+        , Message[MPMInstall::noResults, spec["version"]]
+        ; Throw @ $Failed
+        ]
       ; releaseAssetPacletUrlCases @ release
     ]
 ];

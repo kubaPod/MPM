@@ -1,7 +1,7 @@
 
 Paclet[
     Name -> "MPM",
-    Version -> "0.3.1",
+    Version -> "0.4.1",
     MathematicaVersion -> "10.4+",
     Description -> "",
     Creator -> "
