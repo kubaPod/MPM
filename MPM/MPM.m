@@ -6,7 +6,7 @@ If[
     $VersionNumber < #
   , Message[System`MPM::insv, #]
   ; Abort[]
-]&[10.4]
+]&[10.4];
 
 ClearAll["MPM`*"];
 ClearAll["MPM`*`*"];
